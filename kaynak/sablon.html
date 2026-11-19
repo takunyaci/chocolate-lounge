@@ -81,12 +81,9 @@ a { color: inherit; text-decoration: none; }
 
 /* Kapak */
 .kapak { position: relative; z-index: 2; background: radial-gradient(120% 80% at 50% 0%, #2b1912 0%, var(--gece) 62%); color: #f5ece2; text-align: center; }
-.kapak .wrap { padding-block: clamp(36px, 5vw, 56px) clamp(84px, 11vw, 120px); display: grid; justify-items: center; gap: 20px; }
-.masa { position: relative; height: clamp(440px, 74vh, 740px); background: #3a2314; overflow: hidden; }
-.masa canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.masa::after { content: ""; position: absolute; inset: auto 0 0 0; height: 120px; background: linear-gradient(180deg, transparent, var(--gece)); pointer-events: none; }
-@media (max-width: 760px) { .masa { height: clamp(400px, 62vh, 560px); } }
-.kapak h1 { font-size: clamp(40px, 7vw, 80px); margin-top: 0; background: linear-gradient(180deg, #fff 30%, #d9b996 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.kapak .wrap { padding-block: clamp(56px, 9vw, 110px) clamp(84px, 11vw, 130px); display: grid; justify-items: center; gap: 22px; }
+.kapak .buyuk-logo { width: min(520px, 82vw); aspect-ratio: 805 / 470; height: auto; color: var(--logo-acik); filter: drop-shadow(0 10px 40px rgba(192,138,82,.18)); }
+.kapak h1 { font-size: clamp(40px, 7vw, 80px); margin-top: 10px; background: linear-gradient(180deg, #fff 30%, #d9b996 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .kapak .alt { font-size: clamp(19px, 2.4vw, 25px); color: rgba(245,236,226,.72); max-width: 30ch; letter-spacing: -.015em; }
 .cta { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; margin-top: 6px; font-size: 19px; }
 .cta a { color: var(--altin-acik); }
@@ -267,8 +264,8 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
 </nav>
 
 <header class="kapak" id="kapak">
-  <div class="masa" aria-hidden="true"><canvas id="masa-tuval"></canvas></div>
   <div class="wrap">
+    <svg class="logo-svg buyuk-logo" viewBox="172 122 800 462" role="img" aria-label="Chocolate Lounge &amp; Coffee logosu"><use href="#logo" width="1190.55" height="841.89"/></svg>
     <h1>Tatlının en saf hali.</h1>
     <p class="alt">Sürekli taze sunum. Her gün, her tabakta, ilk günkü lezzet.</p>
     <div class="cta">
@@ -516,202 +513,6 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
   kutu.addEventListener('click', e => { if (e.target === kutu) kapat(); });
   addEventListener('keydown', e => { if (e.key === 'Escape' && !kutu.hidden) kapat(); });
 
-  // Giriş sahnesi: masaya yandan bakış; tabakta katman katman bir pasta kurulur
-  (function masaSahnesi() {
-    const tv = document.getElementById('masa-tuval'), c = tv.getContext('2d');
-    const azH = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let w = 0, h = 0, oran = 1, arka = null, baslangic = null, bitti = false;
-    const tohum = k => () => (k = (k * 16807) % 2147483647) / 2147483647;
-    const cik = t => t <= 0 ? 0 : t >= 1 ? 1 : 1 - Math.pow(1 - t, 3);
-    const zipla = t => { if (t <= 0) return 0; if (t >= 1) return 1; const n = 7.5625, d = 2.75;
-      if (t < 1 / d) return n * t * t; if (t < 2 / d) return n * (t -= 1.5 / d) * t + .75; if (t < 2.5 / d) return n * (t -= 2.25 / d) * t + .9375; return n * (t -= 2.625 / d) * t + .984375; };
-    const aralik = (t, a, b) => Math.min(1, Math.max(0, (t - a) / (b - a)));
-    const logoYap = renk => { const im = new Image(); im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="486 127 186 262" color="' + renk + '">' + document.getElementById('logo').innerHTML + '</svg>'); return im; };
-    const altinLogo = logoYap('#d8ad62'), koyuLogo = logoYap('#5a3216');
-    const K = 0.3; // elips basıklığı (bakış açısı)
-    let G = {};
-
-    function arkaPlanCiz() {
-      const o = document.createElement('canvas'); o.width = w * oran; o.height = h * oran;
-      const g = o.getContext('2d'); g.scale(oran, oran); const rn = tohum(11);
-      const ufuk = G.ufuk;
-      // duvar
-      const dv = g.createLinearGradient(0, 0, 0, ufuk); dv.addColorStop(0, '#120806'); dv.addColorStop(1, '#2b1710');
-      g.fillStyle = dv; g.fillRect(0, 0, w, ufuk + 2);
-      // bokeh ışıklar
-      for (let i = 0; i < 22; i++) {
-        const x = rn() * w, y = rn() * ufuk * .85, r = 14 + rn() * 46, a = .05 + rn() * .14;
-        const sicak = rn() < .75 ? '255,190,120' : '255,232,200';
-        const bg = g.createRadialGradient(x, y, 0, x, y, r); bg.addColorStop(0, `rgba(${sicak},${a})`); bg.addColorStop(.7, `rgba(${sicak},${a * .5})`); bg.addColorStop(1, `rgba(${sicak},0)`);
-        g.fillStyle = bg; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
-      }
-      // masa üst yüzeyi (perspektif)
-      const ms = g.createLinearGradient(0, ufuk, 0, h); ms.addColorStop(0, '#3d2213'); ms.addColorStop(.5, '#5e3820'); ms.addColorStop(1, '#6e4426');
-      g.fillStyle = ms; g.fillRect(0, ufuk, w, h - ufuk);
-      const kx = w / 2, ky = ufuk - h * 1.4;
-      for (let i = -30; i <= 30; i++) { // tahta aralıkları
-        const xb = w / 2 + i * (w * .16);
-        g.beginPath(); g.moveTo(kx + (xb - kx) * ((ufuk - ky) / (h - ky)), ufuk); g.lineTo(xb, h);
-        g.strokeStyle = 'rgba(18,8,3,.55)'; g.lineWidth = 1.6; g.stroke();
-        for (let q = 0; q < 9; q++) { // damar
-          const ofs = (rn() - .5) * w * .15, xx = xb + ofs;
-          g.beginPath(); g.moveTo(kx + (xx - kx) * ((ufuk - ky) / (h - ky)), ufuk);
-          for (let y = ufuk; y <= h; y += 14) { const f = (y - ky) / (h - ky); g.lineTo(kx + (xx - kx) * f + Math.sin(y * .05 + q) * 1.5 * f, y); }
-          g.strokeStyle = rn() < .7 ? `rgba(25,10,4,${.05 + rn() * .1})` : `rgba(255,205,160,${.03 + rn() * .05})`; g.lineWidth = .6 + rn() * 1.2; g.stroke();
-        }
-      }
-      // masa arka kenarı ve duvar dibi gölgesi
-      const kg = g.createLinearGradient(0, ufuk - 30, 0, ufuk + 40); kg.addColorStop(0, 'rgba(0,0,0,0)'); kg.addColorStop(.45, 'rgba(0,0,0,.45)'); kg.addColorStop(1, 'rgba(0,0,0,0)');
-      g.fillStyle = kg; g.fillRect(0, ufuk - 30, w, 70);
-      g.fillStyle = 'rgba(255,210,170,.12)'; g.fillRect(0, ufuk, w, 1.5);
-      // spot ışık ve kenar kararması
-      const sp = g.createRadialGradient(w / 2, G.tabakY - G.R * .8, 0, w / 2, G.tabakY - G.R * .8, Math.max(w, h) * .75);
-      sp.addColorStop(0, 'rgba(255,214,170,.20)'); sp.addColorStop(.4, 'rgba(0,0,0,0)'); sp.addColorStop(1, 'rgba(0,0,0,.6)');
-      g.fillStyle = sp; g.fillRect(0, 0, w, h);
-      arka = o;
-    }
-
-    function hazirla() {
-      const r = tv.getBoundingClientRect(); w = r.width; h = r.height; oran = Math.min(devicePixelRatio || 1, 2);
-      tv.width = w * oran; tv.height = h * oran; c.setTransform(oran, 0, 0, oran, 0, 0);
-      const R = Math.min(w * .27, h * .27);
-      G = { R, ufuk: h * .5, tabakY: h * .8, Hs: R * .3, Hc: R * .075, Rp: R * 1.55 };
-      const rn = tohum(5);
-      G.gozenek = Array.from({ length: 260 }, () => [rn() * Math.PI, rn(), .6 + rn() * 1.4, rn() < .7]);
-      G.damla = Array.from({ length: 12 }, (_, i) => [0.07 * Math.PI + (i + .2 + rn() * .6) / 12 * .86 * Math.PI, i % 3 === 1 ? .12 + rn() * .2 : .3 + rn() * .75, rn() * .3, .55 + rn() * .5]);
-      arkaPlanCiz();
-    }
-
-    // silindir katman: taban merkezi y, yükseklik, yarıçap, renkler
-    function silindir(cx, taban, H, r, yan, ust, doku) {
-      const ry = r * K, tepe = taban - H;
-      const gy = c.createLinearGradient(cx - r, 0, cx + r, 0);
-      gy.addColorStop(0, yan[0]); gy.addColorStop(.28, yan[1]); gy.addColorStop(.55, yan[2]); gy.addColorStop(1, yan[0]);
-      c.fillStyle = gy; c.beginPath(); c.moveTo(cx - r, tepe); c.lineTo(cx - r, taban);
-      c.ellipse(cx, taban, r, ry, 0, Math.PI, 0, true); c.lineTo(cx + r, tepe); c.ellipse(cx, tepe, r, ry, 0, 0, Math.PI, false); c.closePath(); c.fill();
-      if (doku) {
-        for (const [a, f, s, koyu] of G.gozenek) {
-          const x = cx - Math.cos(a) * r * .985, y = tepe + Math.sin(a) * ry + f * H;
-          c.fillStyle = koyu ? 'rgba(20,8,3,.35)' : 'rgba(255,210,170,.12)'; c.beginPath(); c.ellipse(x, y, s * .9 * (.3 + Math.sin(a) * .7), s * .7, 0, 0, Math.PI * 2); c.fill();
-        }
-      }
-      const gu = c.createRadialGradient(cx - r * .3, tepe - ry * .4, 0, cx, tepe, r * 1.05);
-      gu.addColorStop(0, ust[0]); gu.addColorStop(1, ust[1]);
-      c.fillStyle = gu; c.beginPath(); c.ellipse(cx, tepe, r, ry, 0, 0, Math.PI * 2); c.fill();
-      return tepe;
-    }
-
-    function tabak(cx, y, Rp) {
-      c.save(); c.filter = 'blur(10px)'; c.fillStyle = 'rgba(0,0,0,.55)'; c.beginPath(); c.ellipse(cx + Rp * .05, y + Rp * K * .35, Rp * 1.05, Rp * K * 1.05, 0, 0, Math.PI * 2); c.fill(); c.restore();
-      const kal = Rp * .05;
-      c.fillStyle = '#bdb2a7'; c.beginPath(); c.ellipse(cx, y + kal, Rp, Rp * K, 0, 0, Math.PI * 2); c.fill();
-      const g = c.createRadialGradient(cx - Rp * .3, y - Rp * K * .6, Rp * .1, cx, y, Rp);
-      g.addColorStop(0, '#ffffff'); g.addColorStop(.75, '#efe9e3'); g.addColorStop(1, '#d6ccc2');
-      c.fillStyle = g; c.beginPath(); c.ellipse(cx, y, Rp, Rp * K, 0, 0, Math.PI * 2); c.fill();
-      c.strokeStyle = 'rgba(120,96,78,.18)'; c.lineWidth = 1.5; c.beginPath(); c.ellipse(cx, y, Rp * .78, Rp * .78 * K, 0, 0, Math.PI * 2); c.stroke();
-    }
-
-    function frambuaz(x, y, r) {
-      const fg = c.createRadialGradient(x - r * .35, y - r * .4, r * .1, x, y, r);
-      fg.addColorStop(0, '#ff8193'); fg.addColorStop(.55, '#c42a46'); fg.addColorStop(1, '#5e0b1c');
-      c.fillStyle = fg; c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); c.fill();
-      c.fillStyle = 'rgba(255,255,255,.18)';
-      for (let q = 0; q < 9; q++) { const a = q / 9 * Math.PI * 2; c.beginPath(); c.arc(x + Math.cos(a) * r * .55, y + Math.sin(a) * r * .5, r * .2, 0, Math.PI * 2); c.fill(); }
-      c.fillStyle = 'rgba(255,255,255,.75)'; c.beginPath(); c.arc(x - r * .35, y - r * .4, r * .14, 0, Math.PI * 2); c.fill();
-    }
-
-    function kare(zaman) {
-      if (baslangic === null) baslangic = zaman;
-      const t = azH ? 99 : (zaman - baslangic) / 1000;
-      c.clearRect(0, 0, w, h); c.drawImage(arka, 0, 0, w, h);
-      const cx = w / 2, { R, Hs, Hc, Rp } = G; let taban = G.tabakY;
-      tabak(cx, taban, Rp);
-      taban -= R * .02;
-      // pasta gölgesi
-      if (t > .3) { c.save(); c.filter = 'blur(6px)'; c.fillStyle = 'rgba(40,20,10,.35)'; c.beginPath(); c.ellipse(cx + R * .06, taban + R * K * .15, R * 1.06, R * K * 1.06, 0, 0, Math.PI * 2); c.fill(); c.restore(); }
-      const SUNGER = [['#2a1209', '#6b3b22', '#4e2a17'], ['#5a3019', '#3c1e0f']];
-      const KATLAR = [
-        { tip: 's', bas: .2 }, { tip: 'k', bas: .95, yan: ['#d8c4a6', '#fbf1e2', '#efe2cd'], ust: ['#fff8ec', '#e8d8bf'] },
-        { tip: 's', bas: 1.45 }, { tip: 'k', bas: 2.2, yan: ['#4a2615', '#9a6240', '#7a4a2c'], ust: ['#a8714a', '#6e4026'] },
-        { tip: 's', bas: 2.7 }
-      ];
-      let tepe = taban;
-      for (const k of KATLAR) {
-        if (t < k.bas) break;
-        if (k.tip === 's') {
-          const e = aralik(t, k.bas, k.bas + .75), dy = -h * .55 * (1 - zipla(e));
-          c.save(); c.globalAlpha = Math.min(1, e * 4);
-          const yeniTepe = silindir(cx, tepe + dy, Hs, R, SUNGER[0], SUNGER[1], true);
-          c.restore(); tepe = yeniTepe - dy;
-        } else {
-          const e = cik(aralik(t, k.bas, k.bas + .55));
-          tepe = silindir(cx, tepe, Hc * e + .5, R * (.4 + .64 * e), k.yan, k.ust, false);
-        }
-      }
-      // ganaj: dökülüş, üst kaplama, yanlardan akan damlalar
-      const gS = 3.3, ganajYan = ['#0d0502', '#4a2614', '#24100a'], ganajUst = ['#5a3220', '#140703'];
-      if (t > gS) {
-        const yay = cik(aralik(t, gS + .25, gS + 1.1));
-        const dl = cik(aralik(t, gS + .9, gS + 2.2));
-        // damlalar (ön yüzde)
-        if (dl > 0) { // üst kenarı saran çikolata şeridi
-          c.save(); c.strokeStyle = '#1a0a04'; c.lineWidth = R * .07 * dl; c.beginPath(); c.ellipse(cx, tepe + R * .02, R * .985, R * K * .985, 0, 0, Math.PI); c.stroke(); c.restore();
-        }
-        if (dl > 0) for (const [a, uz, gec, kal] of G.damla) {
-          const e = cik(aralik(dl, gec, 1)); if (!e) continue;
-          const x = cx - Math.cos(a) * R * .97, y0 = tepe + Math.sin(a) * R * K, L = Hs * 2 * uz * e, dw = R * .05 * kal * (.55 + Math.sin(a) * .45);
-          const gr = c.createLinearGradient(x - dw, 0, x + dw, 0); gr.addColorStop(0, '#0b0402'); gr.addColorStop(.35, '#4e2a17'); gr.addColorStop(.6, '#2a1208'); gr.addColorStop(1, '#0b0402');
-          c.fillStyle = gr; c.beginPath(); c.moveTo(x - dw * 1.6, y0 - 1); c.quadraticCurveTo(x - dw, y0 + dw, x - dw * .75, y0 + L * .6); c.lineTo(x - dw * .7, y0 + L); c.arc(x, y0 + L, dw * .95, Math.PI, 0, true); c.lineTo(x + dw * .75, y0 + L * .6); c.quadraticCurveTo(x + dw, y0 + dw, x + dw * 1.6, y0 - 1); c.closePath(); c.fill();
-          c.fillStyle = 'rgba(255,220,190,.32)'; c.fillRect(x - dw * .45, y0 + dw, Math.max(1, dw * .2), L * .75); c.beginPath(); c.arc(x - dw * .3, y0 + L - dw * .2, dw * .22, 0, Math.PI * 2); c.fill();
-        }
-        if (yay > 0) {
-          const r = R * (.25 + .78 * yay);
-          silindir(cx, tepe + 1, R * .045 * yay + .5, r, ganajYan, ganajUst, false);
-          // parlak yansıma
-          c.save(); c.globalCompositeOperation = 'lighter'; c.strokeStyle = 'rgba(255,225,200,.28)'; c.lineWidth = R * .03; c.lineCap = 'round';
-          c.beginPath(); c.ellipse(cx, tepe - R * .045 * yay, r * .78, r * K * .78, 0, Math.PI * 1.1, Math.PI * 1.5); c.stroke(); c.restore();
-          tepe -= R * .045 * yay;
-        }
-        // yukarıdan dökülen ganaj
-        const akBas = aralik(t, gS, gS + .35), akSon = aralik(t, gS + 1.1, gS + 1.5);
-        if (akBas > 0 && akSon < 1) {
-          const ust = -10 + (tepe + 10) * cik(akSon), alt = -10 + (tepe + 10) * cik(akBas), gw = R * .085;
-          const ag = c.createLinearGradient(cx - gw, 0, cx + gw, 0); ag.addColorStop(0, '#0b0402'); ag.addColorStop(.35, '#5a3220'); ag.addColorStop(.5, '#e0b48c'); ag.addColorStop(.62, '#3a1a0c'); ag.addColorStop(1, '#0b0402');
-          c.fillStyle = ag; c.fillRect(cx - gw / 2 + Math.sin(t * 9) * .6, ust, gw, alt - ust);
-        }
-      }
-      // süsleme: arkadaki frambuazlar, altın tek boynuz plaket, öndeki frambuazlar
-      const sS = 5.0;
-      if (t > sS) {
-        const yerler = [[.25, 1.05], [.75, .95], [1.25, 1.1], [1.75, .9], [2.3, 1], [2.85, 1.05], [-.2, .95], [3.4, 1]];
-        const ciz = on => yerler.forEach(([a, sc], i) => {
-          const y = Math.sin(a * Math.PI / 2 + 1);
-          if ((y > 0) !== on) return;
-          const e = aralik(t, sS + .35 + i * .09, sS + 1 + i * .09); if (!e) return;
-          const x = cx + Math.cos(a * Math.PI / 2 + 1) * R * .8, yy = tepe + y * R * K * .8 - R * .07;
-          const dy = -h * .3 * (1 - zipla(e));
-          frambuaz(x, yy + dy, R * .085 * sc);
-        });
-        ciz(false);
-        const pl = cik(aralik(t, sS, sS + .8));
-        if (pl > 0 && altinLogo.complete && altinLogo.naturalWidth) {
-          const lh = R * .62, lw = lh * 186 / 262, x = cx - lw / 2, y = tepe - lh * pl - R * .02;
-          c.save(); c.globalAlpha = pl; c.shadowColor = 'rgba(0,0,0,.45)'; c.shadowBlur = 10; c.shadowOffsetY = 4;
-          c.drawImage(koyuLogo, x + 2, y + 2, lw, lh * pl); c.shadowColor = 'transparent'; c.drawImage(altinLogo, x, y, lw, lh * pl); c.restore();
-        }
-        ciz(true);
-        // altın pul ve pudra
-        const pu = aralik(t, sS + 1, sS + 1.6);
-        if (pu > 0) { const rp = tohum(21); for (let q = 0; q < 40; q++) { const a = rp() * Math.PI * 2, d = Math.sqrt(rp()) * R * .9; c.fillStyle = rp() < .5 ? `rgba(230,190,110,${.8 * pu})` : `rgba(255,255,255,${.6 * pu})`; c.beginPath(); c.arc(cx + Math.cos(a) * d, tepe + Math.sin(a) * d * K, .7 + rp() * 1.1, 0, Math.PI * 2); c.fill(); } }
-      }
-      if (t < 7) requestAnimationFrame(kare); else bitti = true;
-    }
-    function basla() { hazirla(); baslangic = null; requestAnimationFrame(kare); }
-    const yenidenCiz = () => { if (bitti) { baslangic = -99999; requestAnimationFrame(kare); } };
-    let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (Math.abs(tv.getBoundingClientRect().width - w) > 2) { hazirla(); yenidenCiz(); } }, 150); });
-    altinLogo.onload = yenidenCiz;
-    basla();
-  })();
 
   // Şubeler şu an açık mı? (Türkiye saatine göre, her gün 10:00–24:00)
   function durumGuncelle() {
