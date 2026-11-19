@@ -49,20 +49,21 @@ a { color: inherit; text-decoration: none; }
 
 /* Menü çubuğu (cam) */
 .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: rgba(13,8,6,.78); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
-.nav-ic { height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 20px; max-width: 1080px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.nav-ic { height: 66px; display: flex; align-items: center; justify-content: space-between; gap: 20px; max-width: 1080px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .nav-marka { display: flex; align-items: center; gap: 10px; color: var(--logo-acik); }
-.nav-marka .ikon { width: 26px; height: 34px; }
-.nav-marka .yazi { width: 112px; height: 15px; }
+.nav-marka .ikon { width: 31px; height: 44px; flex: none; }
+.nav-marka .yazi { width: 154px; height: 36px; flex: none; }
+@media (max-width: 860px) { .nav-marka { gap: 8px; } .nav-marka .ikon { width: 25px; height: 36px; } .nav-marka .yazi { width: 124px; height: 29px; } }
 .nav-linkler { display: flex; align-items: center; gap: 28px; list-style: none; margin: 0; padding: 0; }
 .nav-linkler a, .mobil-panel a, .menu-dugme { font-family: "Montserrat", var(--f); letter-spacing: 0; }
-.nav-linkler a { font-size: 12.5px; font-weight: 500; color: rgba(245,236,226,.8); transition: color .2s; }
+.nav-linkler a { font-size: 12.5px; font-weight: 700; color: rgba(245,236,226,.8); transition: color .2s; }
 .nav-linkler a:hover { color: #fff; }
-.menu-dugme { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: var(--altin); color: #160c07 !important; font-weight: 600; font-size: 12.5px; }
+.menu-dugme { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: var(--altin); color: #160c07 !important; font-weight: 700; font-size: 12.5px; }
 .menu-dugme:hover { background: var(--altin-acik); }
 .hamburger { display: none; width: 40px; height: 40px; border: 0; background: none; color: #f5ece2; cursor: pointer; padding: 0; }
 .hamburger span { display: block; width: 18px; height: 1.5px; background: currentColor; margin: 5px auto; transition: transform .25s; }
 .mobil-panel { background: rgba(13,8,6,.96); padding: 8px max(24px, env(safe-area-inset-right, 0px)) 24px max(24px, env(safe-area-inset-left, 0px)); }
-.mobil-panel a { display: block; color: #f5ece2; font-size: 22px; font-weight: 600; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+.mobil-panel a { display: block; color: #f5ece2; font-size: 22px; font-weight: 700; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
 @media (max-width: 860px) {
   .nav-linkler li:not(.her-zaman) { display: none; }
   .hamburger { display: block; }
@@ -80,9 +81,12 @@ a { color: inherit; text-decoration: none; }
 
 /* Kapak */
 .kapak { position: relative; z-index: 2; background: radial-gradient(120% 80% at 50% 0%, #2b1912 0%, var(--gece) 62%); color: #f5ece2; text-align: center; }
-.kapak .wrap { padding-block: clamp(56px, 9vw, 110px) clamp(84px, 11vw, 130px); display: grid; justify-items: center; gap: 22px; }
-.kapak .buyuk-logo { width: min(520px, 82vw); aspect-ratio: 805 / 470; height: auto; color: var(--logo-acik); filter: drop-shadow(0 10px 40px rgba(192,138,82,.18)); }
-.kapak h1 { font-size: clamp(40px, 7vw, 80px); margin-top: 10px; background: linear-gradient(180deg, #fff 30%, #d9b996 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.kapak .wrap { padding-block: clamp(36px, 5vw, 56px) clamp(84px, 11vw, 120px); display: grid; justify-items: center; gap: 20px; }
+.masa { position: relative; height: clamp(440px, 74vh, 740px); background: #3a2314; overflow: hidden; }
+.masa canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.masa::after { content: ""; position: absolute; inset: auto 0 0 0; height: 120px; background: linear-gradient(180deg, transparent, var(--gece)); pointer-events: none; }
+@media (max-width: 760px) { .masa { height: clamp(400px, 62vh, 560px); } }
+.kapak h1 { font-size: clamp(40px, 7vw, 80px); margin-top: 0; background: linear-gradient(180deg, #fff 30%, #d9b996 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .kapak .alt { font-size: clamp(19px, 2.4vw, 25px); color: rgba(245,236,226,.72); max-width: 30ch; letter-spacing: -.015em; }
 .cta { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; margin-top: 6px; font-size: 19px; }
 .cta a { color: var(--altin-acik); }
@@ -229,8 +233,8 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
 <nav class="nav" aria-label="Ana menü">
   <div class="nav-ic">
     <a class="nav-marka" href="#kapak" aria-label="Chocolate Lounge & Coffee ana sayfa">
-      <svg class="logo-svg ikon" viewBox="484 124 186 262"><use href="#logo" width="1190.55" height="841.89"/></svg>
-      <svg class="logo-svg yazi" viewBox="176 404 790 96"><use href="#logo" width="1190.55" height="841.89"/></svg>
+      <svg class="logo-svg ikon" viewBox="486 127 186 262" aria-hidden="true"><use href="#logo" width="1190.55" height="841.89"/></svg>
+      <svg class="logo-svg yazi" viewBox="174 401 796 186" role="img" aria-label="Chocolate Lounge &amp; Coffee"><use href="#logo" width="1190.55" height="841.89"/></svg>
     </a>
     <ul class="nav-linkler">
       <li><a href="#hakkimizda">Hakkımızda</a></li>
@@ -254,13 +258,12 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
 </nav>
 
 <header class="kapak" id="kapak">
+  <div class="masa" aria-hidden="true"><canvas id="masa-tuval"></canvas></div>
   <div class="wrap">
-    <svg class="logo-svg buyuk-logo" viewBox="172 122 800 462" role="img" aria-label="Chocolate Lounge &amp; Coffee logosu"><use href="#logo" width="1190.55" height="841.89"/></svg>
     <h1>Tatlının en saf hali.</h1>
     <p class="alt">Sürekli taze sunum. Her gün, her tabakta, ilk günkü lezzet.</p>
     <div class="cta">
       <a class="dolu" href="#" data-menu-link>Menüyü incele</a>
-      <a href="#subeler">Şubeleri bul ›</a>
     </div>
   </div>
   <svg class="damla-kenar" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
@@ -543,6 +546,181 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
   kapatB.addEventListener('click', kapat);
   kutu.addEventListener('click', e => { if (e.target === kutu) kapat(); });
   addEventListener('keydown', e => { if (e.key === 'Escape' && !kutu.hidden) kapat(); });
+
+  // Giriş sahnesi: ahşap masa, kenarlardan gelen soslar ortada birleşip tatlıya dönüşür
+  (function masaSahnesi() {
+    const tv = document.getElementById('masa-tuval'), c = tv.getContext('2d');
+    const azH = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let w = 0, h = 0, oran = 1, ahsap = null, baslangic = null, logoImg = null, bitti = false;
+    const rnd = (n => () => (n = (n * 16807) % 2147483647) / 2147483647)(7);
+    const SOS = {
+      bitter: ['#0b0402', '#2a1208', '#4a2614', '#7a4b2e', '#e6bf98'],
+      sutlu:  ['#2a1208', '#5a3019', '#7c4a2b', '#a8714a', '#f6dcbc'],
+      karamel:['#4a2306', '#8f5218', '#bf7f38', '#dca25c', '#fff1d6'],
+      beyaz:  ['#a8957e', '#dccdb9', '#efe5d6', '#fbf6ee', '#ffffff']
+    };
+    const akislar = [];
+    const logoSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="486 127 186 262" color="#f1e2cd">' + document.getElementById('logo').innerHTML + '</svg>';
+    logoImg = new Image(); logoImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(logoSvg);
+
+    function ahsapCiz() {
+      const o = document.createElement('canvas'); o.width = w * oran; o.height = h * oran;
+      const g = o.getContext('2d'); g.scale(oran, oran);
+      const rn = (k => () => (k = (k * 16807) % 2147483647) / 2147483647)(42);
+      const tahta = Math.max(64, Math.min(w, h) * 0.17);
+      for (let y = -tahta * 0.3, i = 0; y < h; y += tahta, i++) {
+        const l = 26 + rn() * 9, hue = 22 + rn() * 6;
+        const gr = g.createLinearGradient(0, y, 0, y + tahta);
+        gr.addColorStop(0, `hsl(${hue},48%,${l + 3}%)`); gr.addColorStop(.5, `hsl(${hue},50%,${l}%)`); gr.addColorStop(1, `hsl(${hue},46%,${l - 4}%)`);
+        g.fillStyle = gr; g.fillRect(0, y, w, tahta);
+        const faz = rn() * 100;
+        for (let k = 0; k < 26; k++) {
+          const yy = y + rn() * tahta, a = 0.04 + rn() * 0.12, kal = 0.5 + rn() * 1.8, f1 = 0.002 + rn() * 0.006, gen = 1 + rn() * 4;
+          g.beginPath();
+          for (let x = 0; x <= w; x += 8) { const yv = yy + Math.sin(x * f1 + faz + k) * gen + Math.sin(x * 0.021 + k * 3) * 0.8; x ? g.lineTo(x, yv) : g.moveTo(x, yv); }
+          g.strokeStyle = rn() < 0.75 ? `rgba(30,14,6,${a})` : `rgba(255,214,170,${a * 0.6})`; g.lineWidth = kal; g.stroke();
+        }
+        if (rn() < 0.55) {
+          const kx = rn() * w, ky = y + tahta * (0.3 + rn() * 0.4);
+          for (let q = 6; q > 0; q--) { g.beginPath(); g.ellipse(kx, ky, q * 5 + 4, q * 1.8 + 2, 0, 0, Math.PI * 2); g.strokeStyle = `rgba(30,14,6,${0.06 + q * 0.015})`; g.lineWidth = 1.2; g.stroke(); }
+          g.beginPath(); g.ellipse(kx, ky, 5, 2.4, 0, 0, Math.PI * 2); g.fillStyle = 'rgba(30,14,6,.35)'; g.fill();
+        }
+        g.fillStyle = 'rgba(15,7,3,.55)'; g.fillRect(0, y + tahta - 2, w, 2);
+        g.fillStyle = 'rgba(255,220,180,.08)'; g.fillRect(0, y + tahta, w, 1);
+      }
+      const isik = g.createRadialGradient(w / 2, h * 0.46, 0, w / 2, h * 0.46, Math.max(w, h) * 0.65);
+      isik.addColorStop(0, 'rgba(255,210,160,.16)'); isik.addColorStop(.45, 'rgba(0,0,0,0)'); isik.addColorStop(1, 'rgba(0,0,0,.62)');
+      g.fillStyle = isik; g.fillRect(0, 0, w, h);
+      ahsap = o;
+    }
+
+    function hazirla() {
+      const r = tv.getBoundingClientRect(); w = r.width; h = r.height; oran = Math.min(devicePixelRatio || 1, 2);
+      tv.width = w * oran; tv.height = h * oran; c.setTransform(oran, 0, 0, oran, 0, 0);
+      ahsapCiz();
+      akislar.length = 0;
+      const cx = w / 2, cy = h * 0.46, D = Math.hypot(w, h) * 0.62, S = Math.min(w, h);
+      const turler = ['bitter', 'sutlu', 'karamel', 'bitter', 'beyaz', 'sutlu'];
+      for (let i = 0; i < 6; i++) {
+        const a = -Math.PI / 2 + i * Math.PI / 3 + 0.35, yon = i % 2 ? 1 : -1;
+        const P = (ang, d) => [cx + Math.cos(ang) * d, cy + Math.sin(ang) * d * 0.92];
+        akislar.push({ p: [P(a, D), P(a + yon * 0.55, D * 0.62), P(a - yon * 0.5, D * 0.32), P(a + 0.2, S * 0.03)], renk: SOS[turler[i]], gec: i * 0.16, gen: S * (0.03 + (i % 3) * 0.006) });
+      }
+    }
+    const bez = (p, t) => { const u = 1 - t; return [0, 1].map(k => u * u * u * p[0][k] + 3 * u * u * t * p[1][k] + 3 * u * t * t * p[2][k] + t * t * t * p[3][k]); };
+    const kolay = t => t <= 0 ? 0 : t >= 1 ? 1 : t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const cik = t => t <= 0 ? 0 : t >= 1 ? 1 : 1 - Math.pow(1 - t, 3);
+
+    function akisCiz(ak, ilerleme, zaman) {
+      if (ilerleme <= 0) return;
+      const n = 120, son = Math.ceil(n * ilerleme), merkez = [], sol = [], sag = [];
+      for (let i = 0; i <= son; i++) {
+        const tt = Math.min(i / n, ilerleme);
+        merkez.push([bez(ak.p, tt), ak.gen * (1.35 - 0.6 * tt) * (1 + 0.14 * Math.sin(tt * 23 + ak.gec * 9) + 0.06 * Math.sin(tt * 57))]);
+      }
+      const kenar = (oran, kayma) => {
+        const L1 = [], R1 = [];
+        for (let i = 0; i < merkez.length; i++) {
+          const j = Math.min(i + 1, merkez.length - 1), k = Math.max(i - 1, 0);
+          const dx = merkez[j][0][0] - merkez[k][0][0], dy = merkez[j][0][1] - merkez[k][0][1], L = Math.hypot(dx, dy) || 1;
+          const nx = dy / L, ny = -dx / L, [x, y] = merkez[i][0], yw = merkez[i][1] / 2;
+          L1.push([x + nx * yw * (oran + kayma), y + ny * yw * (oran + kayma)]); R1.push([x - nx * yw * (oran - kayma), y - ny * yw * (oran - kayma)]);
+        }
+        return [L1, R1];
+      };
+      const dolgu = (oran, kayma, renk, alfa) => {
+        const [L1, R1] = kenar(oran, kayma); c.globalAlpha = alfa; c.fillStyle = renk; c.beginPath();
+        L1.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y));
+        for (let i = R1.length - 1; i >= 0; i--) c.lineTo(R1[i][0], R1[i][1]);
+        c.closePath(); c.fill(); c.globalAlpha = 1;
+      };
+      c.save();
+      c.shadowColor = 'rgba(10,4,2,.38)'; c.shadowBlur = 10; c.shadowOffsetY = 4;
+      dolgu(1, 0, ak.renk[0], 1); c.shadowColor = 'transparent';
+      dolgu(.86, .04, ak.renk[1], 1);
+      dolgu(.55, .14, ak.renk[2], .9);
+      // ince parlak yansıma şeridi
+      const [Lh] = kenar(.42, .0); c.beginPath(); Lh.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y));
+      c.strokeStyle = ak.renk[4]; c.globalAlpha = .55; c.lineWidth = Math.max(1, ak.gen * .07); c.lineCap = 'round'; c.stroke(); c.globalAlpha = 1;
+      c.restore();
+      if (ilerleme < 1) {
+        const [[x, y], gw] = merkez[merkez.length - 1], rr = gw * .62;
+        const rg = c.createRadialGradient(x - rr * .3, y - rr * .3, 1, x, y, rr * 1.1);
+        rg.addColorStop(0, ak.renk[2]); rg.addColorStop(.6, ak.renk[1]); rg.addColorStop(1, ak.renk[0]);
+        c.fillStyle = rg; c.beginPath(); c.ellipse(x, y, rr * 1.05, rr, 0, 0, Math.PI * 2); c.fill();
+      }
+    }
+
+    function tabak(cx, cy, R) {
+      c.save(); c.shadowColor = 'rgba(0,0,0,.5)'; c.shadowBlur = R * .22; c.shadowOffsetY = R * .07;
+      const g = c.createRadialGradient(cx - R * .25, cy - R * .3, R * .1, cx, cy, R);
+      g.addColorStop(0, '#ffffff'); g.addColorStop(.7, '#f1ebe4'); g.addColorStop(.93, '#ddd3c9'); g.addColorStop(1, '#c9bdb1');
+      c.fillStyle = g; c.beginPath(); c.arc(cx, cy, R, 0, Math.PI * 2); c.fill(); c.restore();
+      c.beginPath(); c.arc(cx, cy, R * .74, 0, Math.PI * 2); c.strokeStyle = 'rgba(120,96,78,.16)'; c.lineWidth = 2; c.stroke();
+    }
+
+    function tatli(cx, cy, R, b, yerles, stencil, meyve, zaman) {
+      if (b <= 0) return;
+      const r0 = R * b, kar = (1 - yerles) * 0.09 + 0.004;
+      const kenar = th => r0 * (1 + kar * Math.sin(th * 5 + 1.3) + kar * .6 * Math.sin(th * 9 + 2.1) + yerles * 0.07 * Math.max(0, Math.sin(th * 6 + .4)) ** 14);
+      c.save(); c.shadowColor = 'rgba(20,8,3,.55)'; c.shadowBlur = R * .2; c.shadowOffsetY = R * .08;
+      const g = c.createRadialGradient(cx - r0 * .3, cy - r0 * .35, r0 * .05, cx, cy, r0 * 1.05);
+      g.addColorStop(0, '#6a3a22'); g.addColorStop(.45, '#3a1c0f'); g.addColorStop(1, '#170803');
+      c.fillStyle = g; c.beginPath();
+      for (let i = 0; i <= 120; i++) { const th = i / 120 * Math.PI * 2, rr = kenar(th); const x = cx + Math.cos(th) * rr, y = cy + Math.sin(th) * rr; i ? c.lineTo(x, y) : c.moveTo(x, y); }
+      c.closePath(); c.fill(); c.restore();
+      // pasta kenarı: hafif açık halka ve içte gölge, yuvarlak bir tatlı olarak okunsun
+      if (yerles > 0) {
+        c.save(); c.globalAlpha = yerles;
+        c.beginPath(); c.arc(cx, cy, r0 * .97, 0, Math.PI * 2); c.strokeStyle = 'rgba(140,84,52,.55)'; c.lineWidth = r0 * .035; c.stroke();
+        c.beginPath(); c.arc(cx, cy, r0 * .9, 0, Math.PI * 2); c.strokeStyle = 'rgba(10,4,2,.35)'; c.lineWidth = r0 * .04; c.stroke();
+        c.restore();
+      }
+      // parlak yüzey yansıması
+      c.save(); c.globalCompositeOperation = 'lighter';
+      const k = c.createRadialGradient(cx - r0 * .32, cy - r0 * .38, 0, cx - r0 * .32, cy - r0 * .38, r0 * .55);
+      k.addColorStop(0, 'rgba(255,215,180,.28)'); k.addColorStop(1, 'rgba(255,215,180,0)');
+      c.fillStyle = k; c.beginPath(); c.arc(cx, cy, r0 * .98, 0, Math.PI * 2); c.fill();
+      c.beginPath(); c.arc(cx, cy, r0 * .86, Math.PI * 1.08, Math.PI * 1.42); c.strokeStyle = 'rgba(255,230,205,.32)'; c.lineWidth = r0 * .035; c.lineCap = 'round'; c.stroke();
+      c.restore();
+      if (stencil > 0 && logoImg.complete && logoImg.naturalWidth) {
+        const lh = r0 * 1.05, lw = lh * 186 / 262;
+        c.save(); c.globalAlpha = stencil * .92; c.drawImage(logoImg, cx - lw / 2, cy - lh / 2 - r0 * .02, lw, lh); c.restore();
+      }
+      if (meyve > 0) {
+        const yerler = [[-.62, .5, 1], [.66, .42, .9], [.05, .78, .85]];
+        yerler.forEach(([ax, ay, sc], i) => {
+          const m = cik(Math.min(1, Math.max(0, meyve * 1.6 - i * .3))); if (!m) return;
+          const x = cx + ax * r0, y = cy + ay * r0, rr = r0 * .1 * sc * m;
+          const fg = c.createRadialGradient(x - rr * .35, y - rr * .35, rr * .1, x, y, rr);
+          fg.addColorStop(0, '#ff7a8a'); fg.addColorStop(.55, '#c22c45'); fg.addColorStop(1, '#6e0f22');
+          c.fillStyle = fg; c.beginPath(); c.arc(x, y, rr, 0, Math.PI * 2); c.fill();
+          c.fillStyle = 'rgba(255,255,255,.22)';
+          for (let q = 0; q < 7; q++) { const a = q / 7 * Math.PI * 2; c.beginPath(); c.arc(x + Math.cos(a) * rr * .55, y + Math.sin(a) * rr * .55, rr * .17, 0, Math.PI * 2); c.fill(); }
+          if (i === 0) { c.save(); c.translate(x + rr * .9, y - rr * .9); c.rotate(-.7); const ng = c.createLinearGradient(0, 0, rr * 2.4, 0); ng.addColorStop(0, '#7fb35a'); ng.addColorStop(1, '#2f5d26'); c.fillStyle = ng; c.beginPath(); c.ellipse(rr * 1.2, 0, rr * 1.25 * m, rr * .5 * m, 0, 0, Math.PI * 2); c.fill(); c.restore(); }
+        });
+        // pudra şekeri
+        c.fillStyle = 'rgba(255,255,255,.7)';
+        const rp = (k => () => (k = (k * 16807) % 2147483647) / 2147483647)(9);
+        for (let q = 0; q < 46 * meyve; q++) { const a = rp() * Math.PI * 2, d = Math.sqrt(rp()) * r0 * .95; c.beginPath(); c.arc(cx + Math.cos(a) * d, cy + Math.sin(a) * d, .6 + rp() * 1.1, 0, Math.PI * 2); c.fill(); }
+      }
+    }
+
+    function kare(zaman) {
+      if (baslangic === null) baslangic = zaman;
+      const t = azH ? 99 : (zaman - baslangic) / 1000;
+      c.clearRect(0, 0, w, h); c.drawImage(ahsap, 0, 0, w, h);
+      const cx = w / 2, cy = h * 0.46, S = Math.min(w, h), Rp = S * 0.3, R = Rp * .6;
+      tabak(cx, cy, Rp);
+      akislar.forEach(ak => akisCiz(ak, kolay((t - ak.gec) / 1.9), zaman));
+      tatli(cx, cy, R, cik((t - 2.2) / .9), cik((t - 2.9) / .9), cik((t - 3.5) / .8), cik((t - 4.0) / .9), zaman);
+      if (t < 5.2) requestAnimationFrame(kare); else bitti = true;
+    }
+    function basla() { hazirla(); baslangic = null; requestAnimationFrame(kare); }
+    let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { const yw = tv.getBoundingClientRect().width; if (Math.abs(yw - w) > 2) { hazirla(); if (bitti) { baslangic = -99999; requestAnimationFrame(kare); } } }, 150); });
+    logoImg.onload = () => { if (bitti) { baslangic = -99999; requestAnimationFrame(kare); } };
+    basla();
+  })();
 
   // Çikolata dökülüşü: sos potundan suflenin üstüne, sahne görünür oldukça akar
   const tuval = document.getElementById('akis'), ctx = tuval.getContext('2d');
