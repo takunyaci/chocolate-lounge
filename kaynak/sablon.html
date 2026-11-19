@@ -187,20 +187,37 @@ a { color: inherit; text-decoration: none; }
 
 /* Buluşma */
 .bulusma { text-align: center; padding-bottom: 0; }
-.tatli-sahne { position: relative; display: flex; justify-content: center; margin-top: 250px; }
-.sos-potu { position: absolute; top: -190px; left: calc(50% + 34px); width: 170px; height: auto; overflow: visible; transform-origin: 20% 30%; transform: rotate(calc(-8deg - 26deg * var(--egim, 0))); filter: drop-shadow(0 14px 22px rgba(60,34,22,.18)); }
-.tatli { width: min(380px, 84vw); height: auto; display: block; overflow: visible; }
-.sir-akis { transform-box: fill-box; transform-origin: top; transform: scaleY(.08); transition: transform 1.6s cubic-bezier(.2,.8,.2,1); }
-.bulusti .sir-akis { transform: scaleY(1); }
-.sir-ust { opacity: .0; transition: opacity .6s; }
-.bulusti .sir-ust { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .sir-akis, .sir-ust { transition: none; } }
 .iletisim { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; margin-top: 28px; font-size: 17px; color: var(--metin-2); }
 .iletisim b { color: var(--metin); font-weight: 600; }
 .kopya { border: 1px solid var(--cizgi); background: #fff; color: var(--metin); border-radius: 999px; padding: 4px 12px; font: 500 13px var(--f); cursor: pointer; margin-left: 6px; }
 .kopya:hover { border-color: var(--altin); }
 
-footer { background: var(--gece); color: rgba(245,236,226,.55); position: relative; z-index: 6; margin-top: 64px; }
+/* Şu an açık mıyız? */
+.durum-kartlar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 860px; margin: 44px auto 0; text-align: left; }
+.durum-kart { background: var(--karo); border-radius: 28px; padding: 28px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.durum-kart h3 { font-size: 26px; }
+.durum-kart p { color: var(--metin-2); font-size: 16px; }
+.durum { display: inline-flex; align-items: center; gap: 8px; justify-self: start; padding: 5px 12px 5px 10px; border-radius: 999px; background: #fff; font-size: 13px; font-weight: 600; color: var(--metin); box-shadow: inset 0 0 0 1px var(--cizgi); }
+.nokta { width: 8px; height: 8px; border-radius: 50%; background: #9a8f88; flex: none; }
+.durum.acik .nokta { background: #2f9e57; box-shadow: 0 0 0 4px rgba(47,158,87,.16); animation: nabiz 2s ease-in-out infinite; }
+.durum.yakinda .nokta { background: #d08a1e; box-shadow: 0 0 0 4px rgba(208,138,30,.18); }
+.durum.kapali .nokta { background: #c0392b; }
+@keyframes nabiz { 50% { box-shadow: 0 0 0 7px rgba(47,158,87,.06); } }
+@media (prefers-reduced-motion: reduce) { .durum.acik .nokta { animation: none; } }
+.durum-dugmeler { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.d-dugme { display: inline-flex; align-items: center; padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 15px; border: 1px solid var(--cizgi); background: #fff; color: var(--metin); transition: transform .2s, background .2s; }
+.d-dugme.dolu { background: var(--metin); color: #fbf6ef; border-color: var(--metin); }
+.d-dugme:hover { transform: translateY(-2px); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+
+/* Çikolatayla dolan dev logo yazısı */
+.dev-yazi { padding: clamp(80px, 11vw, 140px) max(16px, env(safe-area-inset-right, 0px)) clamp(36px, 5vw, 56px) max(16px, env(safe-area-inset-left, 0px)); text-align: center; overflow: hidden; }
+.dev-svg { display: block; width: 100%; max-width: 1240px; height: auto; margin-inline: auto; overflow: hidden; }
+.bos-harf { color: #f1e9e0; stroke: #dccdbd; stroke-width: 1.1; }
+.dev-alt { margin-top: clamp(10px, 1.6vw, 20px); font-size: clamp(16px, 2.6vw, 30px); letter-spacing: .32em; text-transform: uppercase; font-weight: 600; color: var(--altin); opacity: 0; transform: translateY(10px); transition: opacity .8s, transform .8s; }
+.dev-yazi.dolu .dev-alt { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .dev-alt { transition: none; } }
+
+footer { background: var(--gece); color: rgba(245,236,226,.55); position: relative; z-index: 6; }
 footer .wrap { padding-block: 40px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; font-size: 12.5px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
 
@@ -212,15 +229,15 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
   }
 }
 
-#akis { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
 
 @media (max-width: 760px) {
   .bento { grid-template-columns: 1fr; }
   .s2, .s3, .s4, .s6 { grid-column: auto; }
   .k { border-radius: 22px; }
   .k.uzun { min-height: 0; }
-  .tatli-sahne { margin-top: 170px; }
-  .sos-potu { width: 120px; top: -150px; left: calc(50% + 22px); }
+  .durum-kartlar { grid-template-columns: 1fr; }
+  .durum-kart { border-radius: 22px; padding: 24px; }
+  footer .wrap { flex-direction: column; justify-content: center; text-align: center; }
 }
 @media (min-width: 761px) and (max-width: 980px) { .s2 { grid-column: span 3; } .bento.ucu .s2:last-child { grid-column: span 6; } }
 </style>
@@ -421,67 +438,46 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
         <span>E-posta: <b id="eposta" data-k="chocolateloungecoffee" data-a="gmail.com">chocolateloungecoffee [at] gmail.com</b><button class="kopya" type="button" id="kopyala-eposta" data-hedef="eposta">Kopyala</button></span>
         <span>Instagram: <a href="https://www.instagram.com/chocolateloungecoffee/" target="_blank" rel="noopener"><b>@chocolateloungecoffee</b></a></span>
       </div>
-      <div class="tatli-sahne">
-        <svg class="sos-potu" id="sos-potu" viewBox="0 0 170 130" aria-hidden="true">
-          <defs>
-            <linearGradient id="pot-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#efe9e3"/><stop offset="1" stop-color="#cfc4b9"/></linearGradient>
-            <linearGradient id="pot-ic" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1a0b05"/><stop offset=".5" stop-color="#4a2615"/><stop offset="1" stop-color="#1a0b05"/></linearGradient>
-          </defs>
-          <path d="M126 44 C160 40 166 86 128 96" fill="none" stroke="url(#pot-g)" stroke-width="11" stroke-linecap="round"/>
-          <path d="M126 44 C160 40 166 86 128 96" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="1.5"/>
-          <path d="M22 30 Q14 28 8 34 Q18 34 30 40 L44 112 Q80 126 120 112 L134 32 Q80 18 22 30Z" fill="url(#pot-g)"/>
-          <path d="M44 112 Q80 126 120 112" fill="none" stroke="rgba(60,34,22,.12)" stroke-width="2"/>
-          <ellipse cx="80" cy="31" rx="54" ry="9" fill="#e6ddd4"/>
-          <ellipse cx="80" cy="32" rx="48" ry="6.5" fill="url(#pot-ic)"/>
-          <path d="M8 34 Q4 40 6 46" stroke="#2a140a" stroke-width="5" stroke-linecap="round" fill="none"/>
-          <path d="M60 50 Q58 80 64 104" stroke="rgba(255,255,255,.7)" stroke-width="5" stroke-linecap="round" fill="none"/>
-          <rect id="agiz" x="4" y="45" width="3" height="3" fill="none"/>
-        </svg>
-        <svg class="tatli" viewBox="0 0 360 260" role="img" aria-label="Üzerine sıcak çikolata dökülen sufle">
-          <defs>
-            <radialGradient id="tabak" cx=".5" cy=".42" r=".6"><stop offset="0" stop-color="#ffffff"/><stop offset=".75" stop-color="#f1ece7"/><stop offset="1" stop-color="#d9d0c8"/></radialGradient>
-            <radialGradient id="golge" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="rgba(40,22,14,.35)"/><stop offset="1" stop-color="rgba(40,22,14,0)"/></radialGradient>
-            <linearGradient id="govde" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2a140b"/><stop offset=".22" stop-color="#5c321e"/><stop offset=".42" stop-color="#7b4a2f"/><stop offset=".62" stop-color="#5a311d"/><stop offset="1" stop-color="#1f0e07"/></linearGradient>
-            <linearGradient id="govde-ust" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e4028"/><stop offset="1" stop-color="#4a2716"/></linearGradient>
-            <linearGradient id="sir" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0f0603"/><stop offset=".3" stop-color="#2c140a"/><stop offset=".45" stop-color="#5a3420"/><stop offset=".55" stop-color="#2c140a"/><stop offset="1" stop-color="#0b0402"/></linearGradient>
-            <radialGradient id="frambuaz" cx=".35" cy=".3" r=".7"><stop offset="0" stop-color="#ff7a8a"/><stop offset=".5" stop-color="#c22c45"/><stop offset="1" stop-color="#6e0f22"/></radialGradient>
-            <linearGradient id="nane" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7fb35a"/><stop offset="1" stop-color="#2f5d26"/></linearGradient>
-          </defs>
-          <ellipse cx="180" cy="236" rx="170" ry="22" fill="url(#golge)"/>
-          <ellipse cx="180" cy="222" rx="160" ry="28" fill="url(#tabak)"/>
-          <ellipse cx="180" cy="218" rx="120" ry="18" fill="none" stroke="#e8e0d8" stroke-width="1.5"/>
-          <!-- akan çikolata tabağa göl -->
-          
-          <!-- gövde -->
-          <path d="M98 208 L112 102 Q180 86 248 102 L262 208 Q180 222 98 208Z" fill="url(#govde)"/>
-          <path d="M104 160 Q180 172 256 160" stroke="rgba(0,0,0,.18)" stroke-width="2" fill="none"/>
-          <path d="M108 128 Q180 138 252 128" stroke="rgba(255,220,190,.06)" stroke-width="2" fill="none"/>
-          <ellipse cx="180" cy="102" rx="68" ry="13" fill="url(#govde-ust)"/>
-          <!-- şurup -->
-          <g>
-            <rect id="sir-noktasi" x="178" y="94" width="4" height="2" fill="none"/>
-            <path class="sir-ust" d="M114 104 Q120 88 180 86 Q240 88 246 104 Q244 112 230 110 Q180 102 130 110 Q116 112 114 104Z" fill="url(#sir)"/>
-            <path class="sir-akis" d="M118 106 Q118 132 122 140 Q127 146 131 138 Q133 124 132 108Z" fill="url(#sir)"/>
-            <path class="sir-akis" d="M146 104 Q146 162 150 176 Q156 184 161 174 Q163 150 162 104Z" fill="url(#sir)"/>
-            <path class="sir-akis" d="M184 102 Q184 128 188 136 Q193 142 197 134 Q199 118 198 102Z" fill="url(#sir)"/>
-            <path class="sir-akis" d="M214 104 Q214 180 219 200 Q225 210 231 199 Q233 160 232 106Z" fill="url(#sir)"/>
-            <path class="sir-ust" d="M138 94 Q180 86 222 94" stroke="rgba(255,235,215,.35)" stroke-width="3" fill="none" stroke-linecap="round"/>
-          </g>
-          <!-- pudra şekeri -->
-          <g fill="rgba(255,255,255,.75)">
-            <circle cx="140" cy="100" r="1.1"/><circle cx="158" cy="96" r=".9"/><circle cx="206" cy="97" r="1"/><circle cx="226" cy="101" r="1.2"/><circle cx="170" cy="108" r=".8"/><circle cx="236" cy="108" r=".9"/><circle cx="124" cy="110" r="1"/>
-          </g>
-          <!-- frambuaz + nane -->
-          <g transform="translate(-66 4) scale(-1 1) translate(-392 0)"><path d="M196 70 Q214 46 236 54 Q222 74 196 70Z" fill="url(#nane)"/><path d="M200 69 Q216 58 232 56" stroke="rgba(255,255,255,.35)" stroke-width="1" fill="none"/></g>
-          <g transform="translate(-42 6)">
-            <circle cx="186" cy="78" r="15" fill="url(#frambuaz)"/>
-            <g fill="rgba(255,255,255,.22)"><circle cx="179" cy="72" r="3"/><circle cx="187" cy="70" r="2.6"/><circle cx="194" cy="75" r="2.4"/><circle cx="181" cy="81" r="2.6"/><circle cx="190" cy="83" r="2.4"/></g>
-            <g fill="rgba(90,10,25,.35)"><circle cx="176" cy="78" r="2.8"/><circle cx="184" cy="88" r="2.6"/><circle cx="195" cy="85" r="2.4"/></g>
-            <circle cx="180" cy="71" r="1.6" fill="rgba(255,255,255,.85)"/>
-          </g>
-        </svg>
+      <div class="durum-kartlar">
+        <article class="durum-kart">
+          <div class="durum" data-durum><i class="nokta" aria-hidden="true"></i><span class="durum-yazi">Her gün 10:00 – 24:00</span></div>
+          <h3>Çayeli Şube</h3>
+          <p>Kafeler Sokağı, Çayeli / Rize</p>
+          <div class="durum-dugmeler">
+            <a class="d-dugme dolu" href="tel:+908503091953">Ara · 0850 309 19 53</a>
+            <a class="d-dugme" href="https://www.google.com/maps/search/?api=1&amp;query=Kafeler+Soka%C4%9F%C4%B1+%C3%87ayeli+Rize" target="_blank" rel="noopener">Yol tarifi ›</a>
+          </div>
+        </article>
+        <article class="durum-kart">
+          <div class="durum" data-durum><i class="nokta" aria-hidden="true"></i><span class="durum-yazi">Her gün 10:00 – 24:00</span></div>
+          <h3>Ardeşen Şube</h3>
+          <p>Park Ardeşen AVM, Teras Kat, Ardeşen / Rize</p>
+          <div class="durum-dugmeler">
+            <a class="d-dugme dolu" href="tel:+908503091953">Ara · 0850 309 19 53</a>
+            <a class="d-dugme" href="https://www.google.com/maps/search/?api=1&amp;query=Park+Arde%C5%9Fen+AVM+Arde%C5%9Fen+Rize" target="_blank" rel="noopener">Yol tarifi ›</a>
+          </div>
+        </article>
       </div>
     </div>
+  </section>
+
+  <section class="dev-yazi" id="dev-yazi" aria-label="Chocolate Lounge &amp; Coffee">
+    <svg class="dev-svg" id="dev-svg" viewBox="176 403 792 98" aria-hidden="true">
+      <defs>
+        <mask id="harf-maske" maskUnits="userSpaceOnUse" x="0" y="0" width="1191" height="842">
+          <use href="#logo" width="1190.55" height="841.89" style="color:#fff"/>
+        </mask>
+        <linearGradient id="sivi-g" x1="0" y1="403" x2="0" y2="501" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#7a4a2e"/><stop offset=".35" stop-color="#4a2614"/><stop offset="1" stop-color="#1c0b05"/>
+        </linearGradient>
+      </defs>
+      <use class="bos-harf" href="#logo" width="1190.55" height="841.89"/>
+      <g mask="url(#harf-maske)">
+        <path id="sivi" fill="url(#sivi-g)" d="M170 520H975V520H170Z"/>
+        <path id="sivi-parlak" fill="none" stroke="rgba(255,224,196,.55)" stroke-width="1.4" d=""/>
+      </g>
+    </svg>
+    <div class="dev-alt">Lounge &amp; Coffee</div>
   </section>
 </main>
 
@@ -507,7 +503,6 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
   <figure><img id="isik-resim" alt=""><figcaption id="isik-baslik"></figcaption></figure>
 </div>
 
-<canvas id="akis" aria-hidden="true"></canvas>
 
 <script>
 (function () {
@@ -722,86 +717,51 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
     basla();
   })();
 
-  // Çikolata dökülüşü: sos potundan suflenin üstüne, sahne görünür oldukça akar
-  const tuval = document.getElementById('akis'), ctx = tuval.getContext('2d');
-  const agiz = document.getElementById('agiz'), nokta = document.getElementById('sir-noktasi');
-  const pot = document.getElementById('sos-potu'), bulusma = document.getElementById('iletisim');
-  const az = matchMedia('(prefers-reduced-motion: reduce)');
-  let W, H, dpr, damlalar = [], bulustu = false, sonSicrama = 0;
-  function olc() {
-    dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
-    tuval.width = W * dpr; tuval.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // Şubeler şu an açık mı? (Türkiye saatine göre, her gün 10:00–24:00)
+  function durumGuncelle() {
+    let sa, dk;
+    try {
+      const parca = new Intl.DateTimeFormat('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date());
+      sa = +parca.find(x => x.type === 'hour').value % 24; dk = +parca.find(x => x.type === 'minute').value;
+    } catch (e) { const d = new Date(); sa = d.getHours(); dk = d.getMinutes(); }
+    const simdi = sa * 60 + dk, acilis = 600, kapanis = 1440;
+    let sinif, yazi;
+    if (simdi >= acilis && simdi < kapanis) {
+      const kalan = kapanis - simdi;
+      if (kalan <= 60) { sinif = 'yakinda'; yazi = `Kapanmasına ${kalan} dk`; }
+      else { sinif = 'acik'; yazi = "Şu an açık · 24:00'e kadar"; }
+    } else { sinif = 'kapali'; yazi = "Şu an kapalı · 10:00'da açılıyor"; }
+    document.querySelectorAll('[data-durum]').forEach(el => { el.className = 'durum ' + sinif; el.querySelector('.durum-yazi').textContent = yazi; });
   }
-  const merkez = el => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
-  const yum = t => t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t);
+  durumGuncelle(); setInterval(durumGuncelle, 30000);
 
-  function ciz(zaman) {
-    const t = zaman / 1000;
-    ctx.clearRect(0, 0, W, H);
-    const potR = pot.getBoundingClientRect();
-    const sonda = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
-    let p = yum((H * 0.92 - potR.top) / (H * 0.5));
-    if (sonda) p = 1;
-    if (az.matches) p = potR.top < H ? 1 : 0;
-    pot.style.setProperty('--egim', Math.min(1, p * 4).toFixed(3));
-    const [x0, y0] = merkez(agiz), [x1, y1] = merkez(nokta);
-    const dokulme = Math.max(0, (p - 0.12) / 0.88);
-    if (dokulme > 0 && y0 < H && y1 > 0) {
-      const bas = y0 + dokulme * (y1 - y0), pts = [];
-      const g = W > 760 ? 13 : 9;
-      for (let y = y0; y <= bas; y += 3) {
-        const f = (y - y0) / (y1 - y0);
-        const dalga = az.matches ? 0 : Math.sin(y * 0.05 - t * 6) * 0.6 * f;
-        pts.push([x0 + (x1 - x0) * Math.sqrt(f) + dalga, y, g * (0.85 - 0.25 * f) / 2 * (1 + (az.matches ? 0 : 0.07 * Math.sin(y * 0.09 - t * 9)))]);
-      }
-      if (pts.length > 1) {
-        ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-        const katman = (oran, renk, ofs, alfa, golge) => {
-          const w = pts[pts.length >> 1][2] * 2; ctx.globalAlpha = alfa; ctx.strokeStyle = renk; ctx.lineWidth = Math.max(1, w * oran);
-          if (golge) { ctx.shadowColor = 'rgba(30,14,6,.28)'; ctx.shadowBlur = 12; ctx.shadowOffsetX = 4; ctx.shadowOffsetY = 2; } else ctx.shadowColor = 'transparent';
-          ctx.beginPath();
-          for (let i = 0; i < pts.length; i++) { const [x, y, ww] = pts[i]; const j = Math.min(i + 1, pts.length - 1), k = Math.max(i - 1, 0); const dx = pts[j][0] - pts[k][0], dy = pts[j][1] - pts[k][1], L = Math.hypot(dx, dy) || 1; const px = x + (dy / L) * ww * ofs, py = y - (dx / L) * ww * ofs; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
-          ctx.stroke();
-        };
-        katman(1.00, '#0d0502', 0, 1, true);
-        katman(0.78, '#2c1409', -0.04, 1, false);
-        katman(0.52, '#4a2614', -0.12, 1, false);
-        katman(0.26, '#7a4b2e', -0.26, 0.9, false);
-        katman(0.10, '#e0b58e', -0.32, 0.75, false);
-        ctx.restore();
-        if (!az.matches) {
-          ctx.save(); ctx.globalCompositeOperation = 'lighter';
-          for (let i = 0; i < pts.length - 1; i += 2) {
-            const s = Math.sin(pts[i][1] * 0.06 - t * 10);
-            if (s > 0.85) { const [x, y, w] = pts[i]; ctx.fillStyle = `rgba(255,220,180,${(s - .85) * 1.6})`; ctx.beginPath(); ctx.ellipse(x - w * 0.2, y, w * 0.16, 4, 0, 0, Math.PI * 2); ctx.fill(); }
-          }
-          ctx.restore();
+  // Dev logo yazısı: sayfanın sonuna yaklaştıkça harflerin içi çikolatayla dolar
+  (function devYazi() {
+    const svg = document.getElementById('dev-svg'), bolum = document.getElementById('dev-yazi');
+    const sivi = document.getElementById('sivi'), parlak = document.getElementById('sivi-parlak');
+    const az = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let p = 0, dolduMu = false;
+    function kare(zaman) {
+      const r = svg.getBoundingClientRect(), H = innerHeight, t = zaman / 1000;
+      if (r.bottom > -50 && r.top < H + 50) {
+        const sonda = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+        let hedef = Math.min(1, Math.max(0, (H - r.top) / (H * 0.62)));
+        if (sonda || az) hedef = 1;
+        p += (hedef - p) * (az ? 1 : 0.06);
+        const seviye = 501 - p * 100, gen = az ? 0 : 2.2 + (1 - p) * 2.4;
+        let d = `M170 ${seviye.toFixed(2)}`, cizgi = d;
+        for (let x = 170; x <= 975; x += 15) {
+          const y = seviye + Math.sin(x * 0.022 + t * 2.4) * gen + Math.sin(x * 0.051 - t * 1.7) * gen * 0.45;
+          d += ` L${x} ${y.toFixed(2)}`; cizgi += ` L${x} ${y.toFixed(2)}`;
         }
-        if (bas < y1 - 1) {
-          const [x, y, w] = pts[pts.length - 1];
-          const rg = ctx.createRadialGradient(x - w * .35, y - w * .2, 1, x, y, w * 1.4);
-          rg.addColorStop(0, '#a87250'); rg.addColorStop(.35, '#4a2615'); rg.addColorStop(1, '#0d0502');
-          ctx.fillStyle = rg; ctx.beginPath(); ctx.ellipse(x, y + w * .3, w * 1.2, w * 1.5, 0, 0, Math.PI * 2); ctx.fill();
-        }
+        sivi.setAttribute('d', d + ' L975 520 L170 520 Z');
+        parlak.setAttribute('d', cizgi);
+        const doldu = p > 0.97;
+        if (doldu !== dolduMu) { dolduMu = doldu; bolum.classList.toggle('dolu', doldu); }
       }
+      if (!az || !dolduMu) requestAnimationFrame(kare);
     }
-    const buldu = dokulme >= 1;
-    if (buldu !== bulustu) { bulustu = buldu; bulusma.classList.toggle('bulusti', buldu); }
-    if (buldu && !az.matches && zaman - sonSicrama > 160) {
-      sonSicrama = zaman;
-      for (let i = 0; i < 2; i++) { const a = -Math.PI / 2 + (Math.random() - .5) * 2.4; damlalar.push({ x: x1, y: y1 + scrollY, vx: Math.cos(a) * 1.6, vy: Math.sin(a) * 2.3, r: 1.1 + Math.random() * 1.7, o: 1 }); }
-    }
-    damlalar = damlalar.filter(d => d.o > 0);
-    for (const d of damlalar) {
-      d.vy += 0.13; d.x += d.vx; d.y += d.vy; d.o -= 0.025;
-      const y = d.y - scrollY, rg = ctx.createRadialGradient(d.x - d.r * .4, y - d.r * .4, .2, d.x, y, d.r);
-      rg.addColorStop(0, '#9a6646'); rg.addColorStop(1, '#170903');
-      ctx.globalAlpha = Math.max(0, d.o); ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(d.x, y, d.r, 0, Math.PI * 2); ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(ciz);
-  }
-  addEventListener('resize', olc);
-  olc(); requestAnimationFrame(ciz);
+    requestAnimationFrame(kare);
+  })();
 })();
 </script>
