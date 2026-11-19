@@ -19,11 +19,10 @@
   --altin-acik: #e3c49e;
   --logo-acik: #ead7bf;
   --f: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", Arial, sans-serif;
-  --serit: 14px;          /* akışın sağ kenara uzaklığı */
-  --kenar: 30px;          /* içerik yan boşluğu (akışı keser) */
+  --kenar: 20px;          /* içerik yan boşluğu */
   color-scheme: light;
 }
-@media (min-width: 761px) { :root { --serit: max(44px, 4.5vw); --kenar: calc(max(44px, 4.5vw) + 36px); } }
+@media (min-width: 761px) { :root { --kenar: 32px; } }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html { scroll-behavior: smooth; overflow-x: clip; }
@@ -70,6 +69,15 @@ a { color: inherit; text-decoration: none; }
   .nav-linkler { gap: 8px; }
 }
 
+/* Üzerine gelince alt çizgi */
+.nav-linkler a:not(.menu-dugme), .mobil-panel a { position: relative; }
+.nav-linkler a:not(.menu-dugme)::after { content: ""; position: absolute; left: 0; right: 0; bottom: -5px; height: 1.5px; border-radius: 2px; background: var(--altin); transform: scaleX(0); transform-origin: left; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+.nav-linkler a:not(.menu-dugme):hover::after, .nav-linkler a:not(.menu-dugme):focus-visible::after { transform: scaleX(1); }
+.menu-dugme:hover, .cta a:hover, .ig-dugme:hover, .ok-link:hover, .ig-hesap:hover, .mobil-panel a:hover, .sube-menu:hover b, .belge:hover .tikla, .iletisim a:hover b {
+  text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) { .nav-linkler a:not(.menu-dugme)::after { transition: none; } }
+
 /* Kapak */
 .kapak { position: relative; z-index: 2; background: radial-gradient(120% 80% at 50% 0%, #2b1912 0%, var(--gece) 62%); color: #f5ece2; text-align: center; }
 .kapak .wrap { padding-block: clamp(56px, 9vw, 110px) clamp(84px, 11vw, 130px); display: grid; justify-items: center; gap: 22px; }
@@ -80,9 +88,8 @@ a { color: inherit; text-decoration: none; }
 .cta a { color: var(--altin-acik); }
 .cta a:hover { text-decoration: underline; }
 .cta a.dolu { background: var(--altin); color: #160c07; padding: 11px 22px; border-radius: 999px; font-weight: 600; font-size: 17px; }
-.cta a.dolu:hover { text-decoration: none; background: var(--altin-acik); }
+.cta a.dolu:hover { background: var(--altin-acik); }
 .damla-kenar { position: absolute; left: 0; bottom: -38px; width: 100%; height: 40px; display: block; }
-.serit-damla { position: absolute; bottom: -72px; right: max(0px, calc(var(--serit) - 15px)); width: 30px; height: 74px; }
 
 /* Bölümler */
 .bolum { padding-block: clamp(96px, 12vw, 150px) 0; }
@@ -176,7 +183,8 @@ a { color: inherit; text-decoration: none; }
 
 /* Buluşma */
 .bulusma { text-align: center; padding-bottom: 0; }
-.tatli-sahne { position: relative; display: flex; justify-content: center; margin-top: 150px; }
+.tatli-sahne { position: relative; display: flex; justify-content: center; margin-top: 250px; }
+.sos-potu { position: absolute; top: -190px; left: calc(50% + 34px); width: 170px; height: auto; overflow: visible; transform-origin: 20% 30%; transform: rotate(calc(-8deg - 26deg * var(--egim, 0))); filter: drop-shadow(0 14px 22px rgba(60,34,22,.18)); }
 .tatli { width: min(380px, 84vw); height: auto; display: block; overflow: visible; }
 .sir-akis { transform-box: fill-box; transform-origin: top; transform: scaleY(.08); transition: transform 1.6s cubic-bezier(.2,.8,.2,1); }
 .bulusti .sir-akis { transform: scaleY(1); }
@@ -208,6 +216,7 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
   .k { border-radius: 22px; }
   .k.uzun { min-height: 0; }
   .tatli-sahne { margin-top: 170px; }
+  .sos-potu { width: 120px; top: -150px; left: calc(50% + 22px); }
 }
 @media (min-width: 761px) and (max-width: 980px) { .s2 { grid-column: span 3; } .bento.ucu .s2:last-child { grid-column: span 6; } }
 </style>
@@ -257,10 +266,6 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
   <svg class="damla-kenar" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
     <defs><linearGradient id="kenar-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d0806"/><stop offset="1" stop-color="#22130c"/></linearGradient></defs>
     <path fill="url(#kenar-g)" d="M0 0H1200V8C1176 8 1172 26 1158 26S1142 10 1110 10 1072 34 1054 34 1034 12 996 12 948 18 920 18 890 6 842 6 812 36 794 36 774 10 726 10 678 22 650 22 620 8 572 8 538 30 520 30 500 10 458 10 410 17 382 17 356 5 312 5 284 35 266 35 246 12 198 12 160 24 136 24 112 8 82 8 54 15 30 15 14 6 0 6Z"/>
-  </svg>
-  <svg class="serit-damla" viewBox="0 0 30 74" aria-hidden="true">
-    <defs><linearGradient id="serit-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#140804"/><stop offset=".35" stop-color="#3a1d11"/><stop offset=".45" stop-color="#7a4a2e"/><stop offset=".55" stop-color="#3a1d11"/><stop offset="1" stop-color="#120703"/></linearGradient></defs>
-    <path fill="url(#serit-g)" d="M0 0H30C26 16 21 28 20 48 19 62 18 74 15 74S11 62 10 48C9 28 4 16 0 0Z"/>
   </svg>
 </header>
 
@@ -414,6 +419,21 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
         <span>Instagram: <a href="https://www.instagram.com/chocolateloungecoffee/" target="_blank" rel="noopener"><b>@chocolateloungecoffee</b></a></span>
       </div>
       <div class="tatli-sahne">
+        <svg class="sos-potu" id="sos-potu" viewBox="0 0 170 130" aria-hidden="true">
+          <defs>
+            <linearGradient id="pot-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#efe9e3"/><stop offset="1" stop-color="#cfc4b9"/></linearGradient>
+            <linearGradient id="pot-ic" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1a0b05"/><stop offset=".5" stop-color="#4a2615"/><stop offset="1" stop-color="#1a0b05"/></linearGradient>
+          </defs>
+          <path d="M126 44 C160 40 166 86 128 96" fill="none" stroke="url(#pot-g)" stroke-width="11" stroke-linecap="round"/>
+          <path d="M126 44 C160 40 166 86 128 96" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="1.5"/>
+          <path d="M22 30 Q14 28 8 34 Q18 34 30 40 L44 112 Q80 126 120 112 L134 32 Q80 18 22 30Z" fill="url(#pot-g)"/>
+          <path d="M44 112 Q80 126 120 112" fill="none" stroke="rgba(60,34,22,.12)" stroke-width="2"/>
+          <ellipse cx="80" cy="31" rx="54" ry="9" fill="#e6ddd4"/>
+          <ellipse cx="80" cy="32" rx="48" ry="6.5" fill="url(#pot-ic)"/>
+          <path d="M8 34 Q4 40 6 46" stroke="#2a140a" stroke-width="5" stroke-linecap="round" fill="none"/>
+          <path d="M60 50 Q58 80 64 104" stroke="rgba(255,255,255,.7)" stroke-width="5" stroke-linecap="round" fill="none"/>
+          <rect id="agiz" x="4" y="45" width="3" height="3" fill="none"/>
+        </svg>
         <svg class="tatli" viewBox="0 0 360 260" role="img" aria-label="Üzerine sıcak çikolata dökülen sufle">
           <defs>
             <radialGradient id="tabak" cx=".5" cy=".42" r=".6"><stop offset="0" stop-color="#ffffff"/><stop offset=".75" stop-color="#f1ece7"/><stop offset="1" stop-color="#d9d0c8"/></radialGradient>
@@ -524,93 +544,86 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
   kutu.addEventListener('click', e => { if (e.target === kutu) kapat(); });
   addEventListener('keydown', e => { if (e.key === 'Escape' && !kutu.hidden) kapat(); });
 
-  // Çikolata akışı
+  // Çikolata dökülüşü: sos potundan suflenin üstüne, sahne görünür oldukça akar
   const tuval = document.getElementById('akis'), ctx = tuval.getContext('2d');
-  const kapak = document.getElementById('kapak'), nokta = document.getElementById('sir-noktasi'), bulusma = document.getElementById('iletisim');
+  const agiz = document.getElementById('agiz'), nokta = document.getElementById('sir-noktasi');
+  const pot = document.getElementById('sos-potu'), bulusma = document.getElementById('iletisim');
   const az = matchMedia('(prefers-reduced-motion: reduce)');
-  let W, H, dpr, serit, bas, son, hx, kivrim, damlalar = [], bulustu = false, sonSicrama = 0;
-
+  let W, H, dpr, damlalar = [], bulustu = false, sonSicrama = 0;
   function olc() {
     dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
     tuval.width = W * dpr; tuval.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    serit = W - (W > 760 ? Math.max(44, W * 0.045) : 14);
-    const y = scrollY;
-    bas = kapak.getBoundingClientRect().bottom + y + 24;
-    const r = nokta.getBoundingClientRect();
-    son = r.top + y; hx = r.left + r.width / 2;
-    kivrim = son - (W > 760 ? 300 : 190);
   }
+  const merkez = el => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
   const yum = t => t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t);
-  const kAt = d => yum((d - kivrim) / (son - kivrim));
-  const xAt = (d, t) => serit + (hx - serit) * kAt(d) + (az.matches ? 0 : Math.sin(d * 0.016 + t * 2) * 1.4 * (1 - kAt(d)));
-  const wAt = (d, t) => { const g = W > 760 ? 18 : 9; return g * (1 - 0.3 * kAt(d)) * (1 + (az.matches ? 0 : 0.06 * Math.sin(d * 0.05 - t * 7))); };
 
-    function ciz(zaman) {
-    const t = zaman / 1000, sy = scrollY;
+  function ciz(zaman) {
+    const t = zaman / 1000;
     ctx.clearRect(0, 0, W, H);
-    const on = Math.min(son, sy + H * 0.74), ust = Math.max(bas, sy - 30);
-    if (on > bas && ust < sy + H) {
-      const adim = 4, pts = [];
-      for (let d = ust; d < on; d += adim) pts.push([xAt(d, t), d - sy, wAt(d, t) / 2]);
-      pts.push([xAt(on, t), on - sy, wAt(on, t) / 2]);
-      // gövde: aynı merkez çizgisi üzerinde katmanlı çizgiler → dikişsiz silindir parlaklığı
-      const parcaParca = (fn) => fn(pts);
-      ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      const katman = (oran, renk, ofs, alfa, golge) => {
-        parcaParca(sub => {
-          const w = sub[sub.length >> 1][2] * 2; ctx.globalAlpha = alfa; ctx.strokeStyle = renk; ctx.lineWidth = Math.max(1, w * oran);
-          if (golge) { ctx.shadowColor = 'rgba(30,14,6,.30)'; ctx.shadowBlur = 16; ctx.shadowOffsetX = 5; ctx.shadowOffsetY = 3; } else ctx.shadowColor = 'transparent';
-          ctx.beginPath(); for (let i = 0; i < sub.length; i++) { const [x, y, ww] = sub[i]; const j = Math.min(i + 1, sub.length - 1), k = Math.max(i - 1, 0); const dx = sub[j][0] - sub[k][0], dy = sub[j][1] - sub[k][1], L = Math.hypot(dx, dy) || 1; const px = x + (dy / L) * ww * ofs, py = y - (dx / L) * ww * ofs; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke();
-        });
-      };
-      katman(1.00, '#0d0502', 0, 1, true);
-      katman(0.78, '#2c1409', -0.04, 1, false);
-      katman(0.52, '#4a2614', -0.12, 1, false);
-      katman(0.26, '#7a4b2e', -0.26, 0.9, false);
-      katman(0.10, '#e0b58e', -0.32, 0.75, false);
-      katman(0.10, '#5c331d', 0.55, 0.5, false);
-      ctx.restore();
-      // akış boyunca aşağı kayan parıltılar
-      if (!az.matches) {
-        ctx.save(); ctx.globalCompositeOperation = 'lighter';
-        for (let i = 0; i < pts.length - 1; i += 2) {
-          const d = pts[i][1] + sy, s = Math.sin(d * 0.045 - t * 9);
-          if (s > 0.86) {
-            const [x, y, w] = pts[i];
-            ctx.fillStyle = `rgba(255,220,180,${(s - .86) * 1.6})`;
-            ctx.beginPath(); ctx.ellipse(x - w * 0.22, y, w * 0.16, 5, 0, 0, Math.PI * 2); ctx.fill();
-          }
-        }
+    const potR = pot.getBoundingClientRect();
+    const sonda = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+    let p = yum((H * 0.92 - potR.top) / (H * 0.5));
+    if (sonda) p = 1;
+    if (az.matches) p = potR.top < H ? 1 : 0;
+    pot.style.setProperty('--egim', Math.min(1, p * 4).toFixed(3));
+    const [x0, y0] = merkez(agiz), [x1, y1] = merkez(nokta);
+    const dokulme = Math.max(0, (p - 0.12) / 0.88);
+    if (dokulme > 0 && y0 < H && y1 > 0) {
+      const bas = y0 + dokulme * (y1 - y0), pts = [];
+      const g = W > 760 ? 13 : 9;
+      for (let y = y0; y <= bas; y += 3) {
+        const f = (y - y0) / (y1 - y0);
+        const dalga = az.matches ? 0 : Math.sin(y * 0.05 - t * 6) * 0.6 * f;
+        pts.push([x0 + (x1 - x0) * Math.sqrt(f) + dalga, y, g * (0.85 - 0.25 * f) / 2 * (1 + (az.matches ? 0 : 0.07 * Math.sin(y * 0.09 - t * 9)))]);
+      }
+      if (pts.length > 1) {
+        ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        const katman = (oran, renk, ofs, alfa, golge) => {
+          const w = pts[pts.length >> 1][2] * 2; ctx.globalAlpha = alfa; ctx.strokeStyle = renk; ctx.lineWidth = Math.max(1, w * oran);
+          if (golge) { ctx.shadowColor = 'rgba(30,14,6,.28)'; ctx.shadowBlur = 12; ctx.shadowOffsetX = 4; ctx.shadowOffsetY = 2; } else ctx.shadowColor = 'transparent';
+          ctx.beginPath();
+          for (let i = 0; i < pts.length; i++) { const [x, y, ww] = pts[i]; const j = Math.min(i + 1, pts.length - 1), k = Math.max(i - 1, 0); const dx = pts[j][0] - pts[k][0], dy = pts[j][1] - pts[k][1], L = Math.hypot(dx, dy) || 1; const px = x + (dy / L) * ww * ofs, py = y - (dx / L) * ww * ofs; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+          ctx.stroke();
+        };
+        katman(1.00, '#0d0502', 0, 1, true);
+        katman(0.78, '#2c1409', -0.04, 1, false);
+        katman(0.52, '#4a2614', -0.12, 1, false);
+        katman(0.26, '#7a4b2e', -0.26, 0.9, false);
+        katman(0.10, '#e0b58e', -0.32, 0.75, false);
         ctx.restore();
-      }
-      // uç damla
-      if (on < son) {
-        const [x, y, w] = pts[pts.length - 1];
-        const rg = ctx.createRadialGradient(x - w * .35, y - w * .2, 1, x, y, w * 1.35);
-        rg.addColorStop(0, '#a87250'); rg.addColorStop(.35, '#4a2615'); rg.addColorStop(1, '#0d0502');
-        ctx.fillStyle = rg; ctx.beginPath(); ctx.ellipse(x, y + w * .3, w * 1.25, w * 1.5, 0, 0, Math.PI * 2); ctx.fill();
-        if (!az.matches && Math.random() < 0.05) damlalar.push({ x: x + (Math.random() - .5) * w, y: on + w, vx: 0, vy: 1.4, r: 1.6 + Math.random() * 2.2, o: 1 });
+        if (!az.matches) {
+          ctx.save(); ctx.globalCompositeOperation = 'lighter';
+          for (let i = 0; i < pts.length - 1; i += 2) {
+            const s = Math.sin(pts[i][1] * 0.06 - t * 10);
+            if (s > 0.85) { const [x, y, w] = pts[i]; ctx.fillStyle = `rgba(255,220,180,${(s - .85) * 1.6})`; ctx.beginPath(); ctx.ellipse(x - w * 0.2, y, w * 0.16, 4, 0, 0, Math.PI * 2); ctx.fill(); }
+          }
+          ctx.restore();
+        }
+        if (bas < y1 - 1) {
+          const [x, y, w] = pts[pts.length - 1];
+          const rg = ctx.createRadialGradient(x - w * .35, y - w * .2, 1, x, y, w * 1.4);
+          rg.addColorStop(0, '#a87250'); rg.addColorStop(.35, '#4a2615'); rg.addColorStop(1, '#0d0502');
+          ctx.fillStyle = rg; ctx.beginPath(); ctx.ellipse(x, y + w * .3, w * 1.2, w * 1.5, 0, 0, Math.PI * 2); ctx.fill();
+        }
       }
     }
-    const buldu = on >= son - 1;
+    const buldu = dokulme >= 1;
     if (buldu !== bulustu) { bulustu = buldu; bulusma.classList.toggle('bulusti', buldu); }
-    if (buldu && !az.matches && zaman - sonSicrama > 130) {
+    if (buldu && !az.matches && zaman - sonSicrama > 160) {
       sonSicrama = zaman;
-      for (let i = 0; i < 2; i++) { const a = -Math.PI / 2 + (Math.random() - .5) * 2.4; damlalar.push({ x: hx, y: son, vx: Math.cos(a) * 1.8, vy: Math.sin(a) * 2.6, r: 1.2 + Math.random() * 2, o: 1 }); }
+      for (let i = 0; i < 2; i++) { const a = -Math.PI / 2 + (Math.random() - .5) * 2.4; damlalar.push({ x: x1, y: y1 + scrollY, vx: Math.cos(a) * 1.6, vy: Math.sin(a) * 2.3, r: 1.1 + Math.random() * 1.7, o: 1 }); }
     }
-    damlalar = damlalar.filter(p => p.o > 0);
-    for (const p of damlalar) {
-      p.vy += 0.13; p.x += p.vx; p.y += p.vy; p.o -= 0.022;
-      const rg = ctx.createRadialGradient(p.x - p.r * .4, p.y - sy - p.r * .4, .2, p.x, p.y - sy, p.r);
+    damlalar = damlalar.filter(d => d.o > 0);
+    for (const d of damlalar) {
+      d.vy += 0.13; d.x += d.vx; d.y += d.vy; d.o -= 0.025;
+      const y = d.y - scrollY, rg = ctx.createRadialGradient(d.x - d.r * .4, y - d.r * .4, .2, d.x, y, d.r);
       rg.addColorStop(0, '#9a6646'); rg.addColorStop(1, '#170903');
-      ctx.globalAlpha = Math.max(0, p.o); ctx.fillStyle = rg;
-      ctx.beginPath(); ctx.arc(p.x, p.y - sy, p.r, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = Math.max(0, d.o); ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(d.x, y, d.r, 0, Math.PI * 2); ctx.fill();
     }
     ctx.globalAlpha = 1;
     requestAnimationFrame(ciz);
   }
-  addEventListener('resize', olc); addEventListener('load', olc);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(olc);
+  addEventListener('resize', olc);
   olc(); requestAnimationFrame(ciz);
 })();
 </script>
