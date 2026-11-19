@@ -1,0 +1,616 @@
+<title>Chocolate Lounge Coffee</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap">
+<style>
+/* Layout: Apple tarzı ortalı vitrin — koyu kapak, açık bölümler, yuvarlak "bento" karolar.
+   Sağ şeritten akan parlak çikolata (kaydırmaya bağlı canvas) en altta sufleyle buluşur.
+   Tek görünüm, kasıtlı olarak sabit renkler. */
+:root {
+  --gece: #0d0806;        /* kapak / koyu karolar */
+  --gece-2: #1a100c;
+  --zemin: #fbfaf8;       /* sayfa zemini */
+  --karo: #f3efea;        /* açık karo */
+  --metin: #1d1613;
+  --metin-2: #6e625b;     /* ikincil metin */
+  --cizgi: #e4ddd6;
+  --altin: #c08a52;       /* bağlantı / vurgu */
+  --altin-acik: #e3c49e;
+  --logo-acik: #ead7bf;
+  --f: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --serit: 14px;          /* akışın sağ kenara uzaklığı */
+  --kenar: 30px;          /* içerik yan boşluğu (akışı keser) */
+  color-scheme: light;
+}
+@media (min-width: 761px) { :root { --serit: max(44px, 4.5vw); --kenar: calc(max(44px, 4.5vw) + 36px); } }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; overflow-x: clip; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--zemin); color: var(--metin);
+  font-family: var(--f); font-size: 17px; line-height: 1.5; letter-spacing: -.011em;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 40; background: var(--gece); }
+h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -.03em; line-height: 1.05; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--altin); outline-offset: 3px; border-radius: 6px; }
+.wrap {
+  width: 100%; max-width: 1080px; margin-inline: auto;
+  padding-left: max(var(--kenar), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--kenar), env(safe-area-inset-right, 0px));
+}
+.logo-svg { display: block; overflow: hidden; }
+
+/* Taslak şeridi */
+.taslak { background: #2a1a12; color: var(--altin-acik); font-size: 12px; text-align: center; padding: 7px max(16px, env(safe-area-inset-right, 0px)) 7px max(16px, env(safe-area-inset-left, 0px)); }
+
+/* Menü çubuğu (cam) */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: rgba(13,8,6,.78); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
+.nav-ic { height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 20px; max-width: 1080px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.nav-marka { display: flex; align-items: center; gap: 10px; color: var(--logo-acik); }
+.nav-marka .ikon { width: 26px; height: 34px; }
+.nav-marka .yazi { width: 112px; height: 15px; }
+.nav-linkler { display: flex; align-items: center; gap: 28px; list-style: none; margin: 0; padding: 0; }
+.nav-linkler a, .mobil-panel a, .menu-dugme { font-family: "Montserrat", var(--f); letter-spacing: 0; }
+.nav-linkler a { font-size: 12.5px; font-weight: 500; color: rgba(245,236,226,.8); transition: color .2s; }
+.nav-linkler a:hover { color: #fff; }
+.menu-dugme { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: var(--altin); color: #160c07 !important; font-weight: 600; font-size: 12.5px; }
+.menu-dugme:hover { background: var(--altin-acik); }
+.hamburger { display: none; width: 40px; height: 40px; border: 0; background: none; color: #f5ece2; cursor: pointer; padding: 0; }
+.hamburger span { display: block; width: 18px; height: 1.5px; background: currentColor; margin: 5px auto; transition: transform .25s; }
+.mobil-panel { background: rgba(13,8,6,.96); padding: 8px max(24px, env(safe-area-inset-right, 0px)) 24px max(24px, env(safe-area-inset-left, 0px)); }
+.mobil-panel a { display: block; color: #f5ece2; font-size: 22px; font-weight: 600; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+@media (max-width: 860px) {
+  .nav-linkler li:not(.her-zaman) { display: none; }
+  .hamburger { display: block; }
+  .nav-linkler { gap: 8px; }
+}
+
+/* Kapak */
+.kapak { position: relative; z-index: 2; background: radial-gradient(120% 80% at 50% 0%, #2b1912 0%, var(--gece) 62%); color: #f5ece2; text-align: center; }
+.kapak .wrap { padding-block: clamp(56px, 9vw, 110px) clamp(84px, 11vw, 130px); display: grid; justify-items: center; gap: 22px; }
+.kapak .buyuk-logo { width: min(520px, 82vw); aspect-ratio: 805 / 470; height: auto; color: var(--logo-acik); filter: drop-shadow(0 10px 40px rgba(192,138,82,.18)); }
+.kapak h1 { font-size: clamp(40px, 7vw, 80px); margin-top: 10px; background: linear-gradient(180deg, #fff 30%, #d9b996 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.kapak .alt { font-size: clamp(19px, 2.4vw, 25px); color: rgba(245,236,226,.72); max-width: 30ch; letter-spacing: -.015em; }
+.cta { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; margin-top: 6px; font-size: 19px; }
+.cta a { color: var(--altin-acik); }
+.cta a:hover { text-decoration: underline; }
+.cta a.dolu { background: var(--altin); color: #160c07; padding: 11px 22px; border-radius: 999px; font-weight: 600; font-size: 17px; }
+.cta a.dolu:hover { text-decoration: none; background: var(--altin-acik); }
+.damla-kenar { position: absolute; left: 0; bottom: -38px; width: 100%; height: 40px; display: block; }
+.serit-damla { position: absolute; bottom: -72px; right: max(0px, calc(var(--serit) - 15px)); width: 30px; height: 74px; }
+
+/* Bölümler */
+.bolum { padding-block: clamp(96px, 12vw, 150px) 0; }
+.bolum-bas { text-align: center; display: grid; gap: 14px; justify-items: center; margin-bottom: clamp(40px, 6vw, 64px); }
+.goz { font-size: 17px; font-weight: 600; color: var(--altin); letter-spacing: -.01em; }
+.bolum-bas h2 { font-size: clamp(38px, 6vw, 64px); }
+.bolum-bas p { font-size: clamp(19px, 2.2vw, 22px); color: var(--metin-2); max-width: 40ch; }
+
+.bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+.k { background: var(--karo); border-radius: 28px; padding: clamp(26px, 3.4vw, 40px); display: grid; gap: 10px; align-content: start; min-width: 0; overflow: hidden; position: relative; }
+.k.koyu { background: linear-gradient(160deg, #24150f, var(--gece)); color: #f5ece2; }
+.k.koyu .ince { color: rgba(245,236,226,.66); }
+.k h3 { font-size: clamp(26px, 3vw, 34px); }
+.k .ince { color: var(--metin-2); font-size: 17px; max-width: 46ch; }
+.k .rakam { font-size: clamp(54px, 7vw, 84px); font-weight: 700; letter-spacing: -.045em; line-height: 1; font-variant-numeric: tabular-nums; background: linear-gradient(180deg, #8a5a36, #3c2216); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.s2 { grid-column: span 2; } .s3 { grid-column: span 3; } .s4 { grid-column: span 4; } .s6 { grid-column: span 6; }
+.k.uzun { min-height: 300px; }
+.k ul { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.k li { display: flex; gap: 12px; align-items: baseline; font-size: 17px; color: rgba(245,236,226,.86); }
+.k li::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--altin); transform: translateY(-2px); }
+.k .filigran { position: absolute; right: -30px; bottom: -40px; width: 220px; height: 300px; color: rgba(255,255,255,.05); pointer-events: none; }
+
+/* Galeri */
+.serit-galeri { overflow: hidden; padding-block: 16px 56px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.serit-ray { display: flex; width: max-content; animation: kay 46s linear infinite; }
+.serit-galeri:hover .serit-ray { animation-play-state: paused; }
+.serit-grup { display: flex; gap: 22px; padding-right: 22px; }
+.foto { margin: 0; width: clamp(190px, 21vw, 270px); flex: none; background: #fff; padding: 8px; border-radius: 30px; border: 1px solid var(--cizgi); box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 18px 40px rgba(60,34,22,.12); transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+.foto:nth-child(even) { transform: translateY(18px); }
+.foto:hover { transform: translateY(-6px) scale(1.02); }
+.foto img { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 22px; }
+@keyframes kay { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .serit-ray { animation: none; }
+  .serit-galeri { overflow-x: auto; }
+  .serit-grup[aria-hidden] { display: none; }
+}
+
+/* Şubeler */
+.sube .ad { font-size: 26px; font-weight: 700; letter-spacing: -.025em; }
+.sube dl { margin: 6px 0 0; display: grid; gap: 10px; font-size: 16px; }
+.sube dl div { display: grid; gap: 2px; }
+.sube dt { font-size: 12px; font-weight: 600; color: var(--metin-2); text-transform: uppercase; letter-spacing: .06em; }
+.sube dd { margin: 0; overflow-wrap: anywhere; }
+.bos-veri { color: #a0603a; font-style: italic; }
+.ok-link { color: var(--altin); font-weight: 500; margin-top: 8px; }
+.ok-link:hover { text-decoration: underline; }
+
+/* Belgeler */
+.belge { border: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s, background .3s; }
+.belge:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(60,34,22,.12); background: #efe9e2; }
+.belge-ikon { width: 52px; height: 52px; border-radius: 14px; background: #fff; color: var(--altin); display: grid; place-items: center; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 6px 16px rgba(60,34,22,.08); }
+.belge-ikon svg { width: 22px; height: 28px; }
+.belge-bilgi { display: grid; gap: 4px; min-width: 0; }
+.belge-bilgi b { font-size: 19px; letter-spacing: -.02em; line-height: 1.25; }
+.belge-bilgi span { font-size: 14px; color: var(--metin-2); }
+.belge-bilgi .sure { font-size: 12px; font-weight: 600; color: var(--metin-2); text-transform: uppercase; letter-spacing: .05em; }
+.belge-bilgi .tikla { margin-top: 10px; font-size: 15px; font-weight: 500; color: var(--altin); }
+.belge:hover .tikla { text-decoration: underline; }
+.belge-not { text-align: center; font-size: 13px; color: var(--metin-2); margin-top: 22px; }
+.isik-kutusu { position: fixed; inset: 0; z-index: 50; background: rgba(13,8,6,.86); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: grid; place-items: center; padding: max(56px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.isik-kutusu figure { margin: 0; display: grid; gap: 14px; justify-items: center; max-width: 1100px; width: 100%; }
+.isik-kutusu img { max-width: 100%; max-height: 80vh; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.5); background: #fff; }
+.isik-kutusu figcaption { color: #f5ece2; font-size: 15px; font-weight: 600; text-align: center; }
+.kapat { position: absolute; top: max(14px, calc(env(safe-area-inset-top, 0px) + 10px)); right: max(16px, calc(env(safe-area-inset-right, 0px) + 12px)); width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+.kapat:hover { background: rgba(255,255,255,.24); }
+
+.sube-linkler { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 8px; }
+.sube-linkler .ok-link { margin-top: 0; }
+.secim-kart { position: relative; width: min(440px, 100%); background: var(--zemin); color: var(--metin); border-radius: 28px; padding: 32px 24px 24px; display: grid; gap: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+.secim-logo { width: 34px; height: 46px; color: #5a3420; justify-self: center; }
+.secim-kart h2 { font-size: 26px; text-align: center; margin-bottom: 8px; }
+.sube-menu { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: center; background: var(--karo); border-radius: 18px; padding: 16px 20px; transition: background .2s, transform .2s; }
+.sube-menu:hover { background: #ebe3da; transform: translateY(-2px); }
+.sube-menu b { font-size: 18px; letter-spacing: -.02em; }
+.sube-menu span { grid-column: 1; font-size: 14px; color: var(--metin-2); }
+.sube-menu i { grid-column: 2; grid-row: 1 / span 2; font-style: normal; font-size: 20px; color: var(--altin); }
+
+/* Takip */
+.takip-karo { position: relative; overflow: hidden; border-radius: 32px; background: radial-gradient(110% 90% at 15% 0%, #3a2216 0%, var(--gece) 60%); color: #f5ece2; text-align: center; padding: clamp(48px, 8vw, 88px) clamp(22px, 5vw, 64px); }
+.takip-karo::after { content: ""; position: absolute; inset: auto -20% -60% -20%; height: 90%; background: radial-gradient(50% 50% at 50% 50%, rgba(214,41,118,.22), rgba(150,47,191,.12) 45%, transparent 70%); pointer-events: none; }
+.takip-filigran { position: absolute; left: -40px; top: -30px; width: 240px; height: 330px; color: rgba(255,255,255,.04); pointer-events: none; }
+.takip-ic { position: relative; z-index: 1; display: grid; gap: 16px; justify-items: center; }
+.takip-ic h2 { font-size: clamp(34px, 5.6vw, 60px); }
+.takip-ic p { font-size: clamp(17px, 2vw, 21px); color: rgba(245,236,226,.72); max-width: 36ch; }
+.ig-dugme { margin-top: 10px; display: inline-flex; align-items: center; gap: 10px; padding: 15px 28px; border-radius: 999px; color: #fff; font-weight: 600; font-size: 17px; background: linear-gradient(90deg, #f58529, #dd2a7b 45%, #8134af 80%, #515bd4); box-shadow: 0 10px 30px rgba(221,42,123,.35); transition: transform .25s, box-shadow .25s; }
+.ig-dugme:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 16px 40px rgba(221,42,123,.45); }
+.ig-dugme svg { width: 22px; height: 22px; }
+.ig-hesap { font-size: 15px; color: var(--altin-acik); }
+.ig-hesap:hover { text-decoration: underline; }
+
+/* Buluşma */
+.bulusma { text-align: center; padding-bottom: 0; }
+.tatli-sahne { position: relative; display: flex; justify-content: center; margin-top: 150px; }
+.tatli { width: min(380px, 84vw); height: auto; display: block; overflow: visible; }
+.sir-akis { transform-box: fill-box; transform-origin: top; transform: scaleY(.08); transition: transform 1.6s cubic-bezier(.2,.8,.2,1); }
+.bulusti .sir-akis { transform: scaleY(1); }
+.sir-ust { opacity: .0; transition: opacity .6s; }
+.bulusti .sir-ust { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .sir-akis, .sir-ust { transition: none; } }
+.iletisim { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; margin-top: 28px; font-size: 17px; color: var(--metin-2); }
+.iletisim b { color: var(--metin); font-weight: 600; }
+.kopya { border: 1px solid var(--cizgi); background: #fff; color: var(--metin); border-radius: 999px; padding: 4px 12px; font: 500 13px var(--f); cursor: pointer; margin-left: 6px; }
+.kopya:hover { border-color: var(--altin); }
+
+footer { background: var(--gece); color: rgba(245,236,226,.55); position: relative; z-index: 6; margin-top: 64px; }
+footer .wrap { padding-block: 40px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; font-size: 12.5px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
+
+/* Kaydırınca yumuşak beliriş (destekleyen tarayıcılarda; dinlenirken görünür) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .belir { animation: belir linear both; animation-timeline: view(); animation-range: entry 0% entry 40%; }
+    @keyframes belir { from { opacity: .35; transform: translateY(28px) scale(.985); } to { opacity: 1; transform: none; } }
+  }
+}
+
+#akis { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+
+@media (max-width: 760px) {
+  .bento { grid-template-columns: 1fr; }
+  .s2, .s3, .s4, .s6 { grid-column: auto; }
+  .k { border-radius: 22px; }
+  .k.uzun { min-height: 0; }
+  .tatli-sahne { margin-top: 170px; }
+}
+@media (min-width: 761px) and (max-width: 980px) { .s2 { grid-column: span 3; } .bento.ucu .s2:last-child { grid-column: span 6; } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 1190.55 841.89">{{LOGO}}</symbol>
+</svg>
+
+
+<nav class="nav" aria-label="Ana menü">
+  <div class="nav-ic">
+    <a class="nav-marka" href="#kapak" aria-label="Chocolate Lounge & Coffee ana sayfa">
+      <svg class="logo-svg ikon" viewBox="484 124 186 262"><use href="#logo" width="1190.55" height="841.89"/></svg>
+      <svg class="logo-svg yazi" viewBox="176 404 790 96"><use href="#logo" width="1190.55" height="841.89"/></svg>
+    </a>
+    <ul class="nav-linkler">
+      <li><a href="#hakkimizda">Hakkımızda</a></li>
+      <li><a href="#vizyon">Vizyon &amp; Misyon</a></li>
+      <li><a href="#subeler">Şubeler</a></li>
+      <li><a href="#belgeler">Belgelerimiz</a></li>
+      <li><a href="#takip">Takip Et</a></li>
+      <li><a href="#iletisim">İletişim</a></li>
+      <li class="her-zaman"><a class="menu-dugme" href="#" data-menu-link>Menü ↗</a></li>
+      <li class="her-zaman"><button class="hamburger" id="hamburger" type="button" aria-label="Menüyü aç" aria-expanded="false"><span></span><span></span></button></li>
+    </ul>
+  </div>
+  <div class="mobil-panel" id="mobil-panel" hidden>
+    <a href="#hakkimizda">Hakkımızda</a>
+    <a href="#vizyon">Vizyon &amp; Misyon</a>
+    <a href="#subeler">Şubeler</a>
+    <a href="#belgeler">Belgelerimiz</a>
+    <a href="#takip">Takip Et</a>
+    <a href="#iletisim">İletişim</a>
+  </div>
+</nav>
+
+<header class="kapak" id="kapak">
+  <div class="wrap">
+    <svg class="logo-svg buyuk-logo" viewBox="172 122 800 462" role="img" aria-label="Chocolate Lounge &amp; Coffee logosu"><use href="#logo" width="1190.55" height="841.89"/></svg>
+    <h1>Tatlının en saf hali.</h1>
+    <p class="alt">Sürekli taze sunum. Her gün, her tabakta, ilk günkü lezzet.</p>
+    <div class="cta">
+      <a class="dolu" href="#" data-menu-link>Menüyü incele</a>
+      <a href="#subeler">Şubeleri bul ›</a>
+    </div>
+  </div>
+  <svg class="damla-kenar" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="kenar-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d0806"/><stop offset="1" stop-color="#22130c"/></linearGradient></defs>
+    <path fill="url(#kenar-g)" d="M0 0H1200V8C1176 8 1172 26 1158 26S1142 10 1110 10 1072 34 1054 34 1034 12 996 12 948 18 920 18 890 6 842 6 812 36 794 36 774 10 726 10 678 22 650 22 620 8 572 8 538 30 520 30 500 10 458 10 410 17 382 17 356 5 312 5 284 35 266 35 246 12 198 12 160 24 136 24 112 8 82 8 54 15 30 15 14 6 0 6Z"/>
+  </svg>
+  <svg class="serit-damla" viewBox="0 0 30 74" aria-hidden="true">
+    <defs><linearGradient id="serit-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#140804"/><stop offset=".35" stop-color="#3a1d11"/><stop offset=".45" stop-color="#7a4a2e"/><stop offset=".55" stop-color="#3a1d11"/><stop offset="1" stop-color="#120703"/></linearGradient></defs>
+    <path fill="url(#serit-g)" d="M0 0H30C26 16 21 28 20 48 19 62 18 74 15 74S11 62 10 48C9 28 4 16 0 0Z"/>
+  </svg>
+</header>
+
+<main>
+  <section class="bolum" id="hakkimizda">
+    <div class="wrap">
+      <div class="bolum-bas">
+        <div class="goz">Hakkımızda</div>
+        <h2>Sürekli taze sunum.</h2>
+        <p>Tatlılarımız gün boyu, o günün misafirleri için hazırlanır ve vitrine taze olarak gelir.</p>
+      </div>
+      <div class="bento">
+        <div class="k s3 belir"><div class="rakam">Her gün</div><h3>Taze hazırlanır.</h3><p class="ince">Vitrindeki her tatlı o gün, o günün misafirleri için yapılır.</p></div>
+        <div class="k s3 belir"><div class="rakam">2</div><h3>Şube.</h3><p class="ince">Çayeli ve Ardeşen'de, aynı tarif ve aynı özenle.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bolum galeri" id="galeri" aria-label="Fotoğraf galerisi">
+    <div class="wrap">
+      <div class="bolum-bas">
+        <div class="goz">Galeri</div>
+        <h2>Tabağa dökülen mutluluk.</h2>
+      </div>
+    </div>
+    <div class="serit-galeri">
+      <div class="serit-ray">
+        <div class="serit-grup"><figure class="foto"><img src="galeri/cikolatali-kek.jpg" alt="Üzerine sıcak çikolata dökülmüş kek dilimi" loading="lazy" width="640" height="1138"></figure><figure class="foto"><img src="galeri/waffle.jpg" alt="Çikolata soslu, çilekli waffle" loading="lazy" width="640" height="1138"></figure><figure class="foto"><img src="galeri/tek-boynuz-duvar.jpg" alt="Tuğla duvarda ışıklı tek boynuzlu at logosu" loading="lazy" width="640" height="1138"></figure><figure class="foto"><img src="galeri/kruvasan.jpg" alt="Çilekli ve fıstıklı kremalı kruvasan" loading="lazy" width="640" height="1138"></figure><figure class="foto"><img src="galeri/iced-latte.jpg" alt="Buzlu sütün üzerine akan espresso" loading="lazy" width="640" height="1138"></figure></div>
+        <div class="serit-grup" aria-hidden="true"><figure class="foto"><img src="galeri/cikolatali-kek.jpg" alt="" loading="lazy" width="640" height="1138"></figure><figure class="foto"><img src="galeri/waffle.jpg" alt="" loading="lazy" width="640" height="1138"></figure><figure class="foto"><img src="galeri/tek-boynuz-duvar.jpg" alt="" loading="lazy" width="640" height="1138"></figure><figure class="foto"><img src="galeri/kruvasan.jpg" alt="" loading="lazy" width="640" height="1138"></figure><figure class="foto"><img src="galeri/iced-latte.jpg" alt="" loading="lazy" width="640" height="1138"></figure></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bolum" id="vizyon">
+    <div class="wrap">
+      <div class="bolum-bas">
+        <div class="goz">Vizyon &amp; Misyon</div>
+        <h2>Neye inanıyoruz.</h2>
+      </div>
+      <div class="bento">
+        <div class="k s3 koyu uzun belir">
+          <svg class="logo-svg filigran" viewBox="484 124 186 262" aria-hidden="true"><use href="#logo" width="1190.55" height="841.89"/></svg>
+          <div class="goz">Vizyonumuz</div>
+          <h3>Tatlı denince akla gelen ilk adres olmak.</h3>
+          <p class="ince">Bölgemizde tatlı kültürünü donuk vitrinlerden sıcak ve taze sunuma taşımak; her şubede aynı lezzeti ve aynı sıcaklığı sunmak.</p>
+        </div>
+        <div class="k s3 koyu uzun belir">
+          <div class="goz">Misyonumuz</div>
+          <h3>Donuk tatlı değil, sıcak ve kaliteli bir tatlı deneyimi.</h3>
+          <ul>
+            <li>Bekletilmiş, donuk tatlı yerine sıcak ve özenli sunum</li>
+            <li>Gün boyu sürekli taze sunum</li>
+            <li>Her gün kendi mutfağımızda üretim</li>
+            <li>Misafirin kendini evinde hissettiği bir ortam</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bolum" id="subeler">
+    <div class="wrap">
+      <div class="bolum-bas">
+        <div class="goz">Şubeler</div>
+        <h2>Çayeli ve Ardeşen'de.</h2>
+      </div>
+      <div class="bento">
+        <article class="k s3 sube belir">
+          <div class="ad">Çayeli Şube</div>
+          <dl>
+            <div><dt>Adres</dt><dd>Kafeler Sokağı, Çayeli / Rize</dd></div>
+            <div><dt>Telefon</dt><dd>0850 309 19 53</dd></div>
+            <div><dt>Çalışma saatleri</dt><dd>Her gün 10:00 – 24:00</dd></div>
+          </dl>
+          <div class="sube-linkler"><a class="ok-link" href="https://menu.idrydigital.com/menu/chocolate-lounge-coffee-cayeli/1" target="_blank" rel="noopener">Menüyü gör ↗</a><a class="ok-link" href="https://www.google.com/maps/search/?api=1&amp;query=Kafeler+Soka%C4%9F%C4%B1+%C3%87ayeli+Rize" target="_blank" rel="noopener">Yol tarifi al ›</a></div>
+        </article>
+        <article class="k s3 sube belir">
+          <div class="ad">Ardeşen Şube</div>
+          <dl>
+            <div><dt>Adres</dt><dd>Park Ardeşen AVM, Teras Kat, Ardeşen / Rize</dd></div>
+            <div><dt>Telefon</dt><dd>0850 309 19 53</dd></div>
+            <div><dt>Çalışma saatleri</dt><dd>Her gün 10:00 – 24:00</dd></div>
+          </dl>
+          <div class="sube-linkler"><a class="ok-link" href="https://menu.idrydigital.com/menu/chocolate-lounge-coffee-ardesen/1" target="_blank" rel="noopener">Menüyü gör ↗</a><a class="ok-link" href="https://www.google.com/maps/search/?api=1&amp;query=Park+Arde%C5%9Fen+AVM+Arde%C5%9Fen+Rize" target="_blank" rel="noopener">Yol tarifi al ›</a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="bolum" id="belgeler">
+    <div class="wrap">
+      <div class="bolum-bas">
+        <div class="goz">Belgelerimiz</div>
+        <h2>Ustalık, belgeli.</h2>
+        <p>Mutfağımızın arkasındaki emek: Yasin Sarıoğlu'nun aldığı eğitim ve sertifikalar.</p>
+      </div>
+      <div class="bento">
+        <button type="button" class="k s2 belge belir" data-buyuk="belgeler/cikolata-kek.jpg" data-baslik="Çikolata ve Special Kek Yapım Teknikleri">
+          <span class="belge-ikon" aria-hidden="true"><svg viewBox="0 0 24 30"><path d="M3 1h12l6 6v20a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15 1v6h6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 14h12M5 18h12M5 22h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <span class="belge-bilgi"><b>Çikolata ve Special Kek Yapım Teknikleri</b><span>İBB İSMEK</span><span class="sure">16 saat · 2019</span><span class="tikla">Görüntülemek için tıklayın ›</span></span>
+        </button>
+        <button type="button" class="k s2 belge belir" data-buyuk="belgeler/usta-ascilik.jpg" data-baslik="Usta Aşçılık Eğitimi">
+          <span class="belge-ikon" aria-hidden="true"><svg viewBox="0 0 24 30"><path d="M3 1h12l6 6v20a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15 1v6h6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 14h12M5 18h12M5 22h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <span class="belge-bilgi"><b>Usta Aşçılık Eğitimi</b><span>FSMVÜ Sürekli Eğitim Merkezi</span><span class="sure">2400 saat · 2022</span><span class="tikla">Görüntülemek için tıklayın ›</span></span>
+        </button>
+        <button type="button" class="k s2 belge belir" data-buyuk="belgeler/hijyen-egitimi.jpg" data-baslik="Hijyen Eğitimi">
+          <span class="belge-ikon" aria-hidden="true"><svg viewBox="0 0 24 30"><path d="M3 1h12l6 6v20a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15 1v6h6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 14h12M5 18h12M5 22h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <span class="belge-bilgi"><b>Hijyen Eğitimi</b><span>FSMVÜ Sürekli Eğitim Merkezi</span><span class="sure">120 saat · 2022</span><span class="tikla">Görüntülemek için tıklayın ›</span></span>
+        </button>
+        <button type="button" class="k s3 belge belir" data-buyuk="belgeler/is-sagligi-guvenligi.jpg" data-baslik="İş Sağlığı ve Güvenliği İşveren Eğitimi">
+          <span class="belge-ikon" aria-hidden="true"><svg viewBox="0 0 24 30"><path d="M3 1h12l6 6v20a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15 1v6h6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 14h12M5 18h12M5 22h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <span class="belge-bilgi"><b>İş Sağlığı ve Güvenliği İşveren Eğitimi</b><span>ÇSGB · ÇASGEM</span><span class="sure">2025</span><span class="tikla">Görüntülemek için tıklayın ›</span></span>
+        </button>
+        <button type="button" class="k s3 belge belir" data-buyuk="belgeler/usta-ogretici.jpg" data-baslik="Usta Öğretici Oryantasyon Programı">
+          <span class="belge-ikon" aria-hidden="true"><svg viewBox="0 0 24 30"><path d="M3 1h12l6 6v20a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15 1v6h6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 14h12M5 18h12M5 22h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <span class="belge-bilgi"><b>Usta Öğretici Oryantasyon Programı</b><span>FSMVÜ Sürekli Eğitim Merkezi</span><span class="sure">30 saat · 2022</span><span class="tikla">Görüntülemek için tıklayın ›</span></span>
+        </button>
+      </div>
+      <p class="belge-not">Kişisel bilgilerin korunması için kimlik numaraları ve karekodlar belgelerde gizlenmiştir.</p>
+    </div>
+  </section>
+
+  <section class="bolum" id="takip">
+    <div class="wrap">
+      <div class="takip-karo belir">
+        <svg class="logo-svg takip-filigran" viewBox="484 124 186 262" aria-hidden="true"><use href="#logo" width="1190.55" height="841.89"/></svg>
+        <div class="takip-ic">
+          <div class="goz">Sosyal medya</div>
+          <h2>Bizi takip etmeyi unutmayın.</h2>
+          <p>Günün tatlıları, yeni lezzetler ve kampanyalar ilk önce Instagram'da.</p>
+          <a class="ig-dugme" href="https://www.instagram.com/chocolateloungecoffee/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor"/></svg>
+            <span>Instagram'da takip et</span>
+          </a>
+          <a class="ig-hesap" href="https://www.instagram.com/chocolateloungecoffee/" target="_blank" rel="noopener">@chocolateloungecoffee</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bolum bulusma" id="iletisim">
+    <div class="wrap">
+      <div class="bolum-bas" style="margin-bottom:0">
+        <div class="goz">İletişim</div>
+        <h2>Her damla bir tatlıya akar.</h2>
+        <p>Rezervasyon, toplu sipariş ve organizasyonlar için bize yazın ya da şubelerimizi arayın.</p>
+      </div>
+      <div class="iletisim">
+        <span>Telefon: <b id="telefon">0850 309 19 53</b><button class="kopya" type="button" id="kopyala-telefon" data-hedef="telefon">Kopyala</button></span>
+        <span>E-posta: <b id="eposta" data-k="chocolateloungecoffee" data-a="gmail.com">chocolateloungecoffee [at] gmail.com</b><button class="kopya" type="button" id="kopyala-eposta" data-hedef="eposta">Kopyala</button></span>
+        <span>Instagram: <a href="https://www.instagram.com/chocolateloungecoffee/" target="_blank" rel="noopener"><b>@chocolateloungecoffee</b></a></span>
+      </div>
+      <div class="tatli-sahne">
+        <svg class="tatli" viewBox="0 0 360 260" role="img" aria-label="Üzerine sıcak çikolata dökülen sufle">
+          <defs>
+            <radialGradient id="tabak" cx=".5" cy=".42" r=".6"><stop offset="0" stop-color="#ffffff"/><stop offset=".75" stop-color="#f1ece7"/><stop offset="1" stop-color="#d9d0c8"/></radialGradient>
+            <radialGradient id="golge" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="rgba(40,22,14,.35)"/><stop offset="1" stop-color="rgba(40,22,14,0)"/></radialGradient>
+            <linearGradient id="govde" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2a140b"/><stop offset=".22" stop-color="#5c321e"/><stop offset=".42" stop-color="#7b4a2f"/><stop offset=".62" stop-color="#5a311d"/><stop offset="1" stop-color="#1f0e07"/></linearGradient>
+            <linearGradient id="govde-ust" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e4028"/><stop offset="1" stop-color="#4a2716"/></linearGradient>
+            <linearGradient id="sir" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0f0603"/><stop offset=".3" stop-color="#2c140a"/><stop offset=".45" stop-color="#5a3420"/><stop offset=".55" stop-color="#2c140a"/><stop offset="1" stop-color="#0b0402"/></linearGradient>
+            <radialGradient id="frambuaz" cx=".35" cy=".3" r=".7"><stop offset="0" stop-color="#ff7a8a"/><stop offset=".5" stop-color="#c22c45"/><stop offset="1" stop-color="#6e0f22"/></radialGradient>
+            <linearGradient id="nane" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7fb35a"/><stop offset="1" stop-color="#2f5d26"/></linearGradient>
+          </defs>
+          <ellipse cx="180" cy="236" rx="170" ry="22" fill="url(#golge)"/>
+          <ellipse cx="180" cy="222" rx="160" ry="28" fill="url(#tabak)"/>
+          <ellipse cx="180" cy="218" rx="120" ry="18" fill="none" stroke="#e8e0d8" stroke-width="1.5"/>
+          <!-- akan çikolata tabağa göl -->
+          
+          <!-- gövde -->
+          <path d="M98 208 L112 102 Q180 86 248 102 L262 208 Q180 222 98 208Z" fill="url(#govde)"/>
+          <path d="M104 160 Q180 172 256 160" stroke="rgba(0,0,0,.18)" stroke-width="2" fill="none"/>
+          <path d="M108 128 Q180 138 252 128" stroke="rgba(255,220,190,.06)" stroke-width="2" fill="none"/>
+          <ellipse cx="180" cy="102" rx="68" ry="13" fill="url(#govde-ust)"/>
+          <!-- şurup -->
+          <g>
+            <rect id="sir-noktasi" x="178" y="94" width="4" height="2" fill="none"/>
+            <path class="sir-ust" d="M114 104 Q120 88 180 86 Q240 88 246 104 Q244 112 230 110 Q180 102 130 110 Q116 112 114 104Z" fill="url(#sir)"/>
+            <path class="sir-akis" d="M118 106 Q118 132 122 140 Q127 146 131 138 Q133 124 132 108Z" fill="url(#sir)"/>
+            <path class="sir-akis" d="M146 104 Q146 162 150 176 Q156 184 161 174 Q163 150 162 104Z" fill="url(#sir)"/>
+            <path class="sir-akis" d="M184 102 Q184 128 188 136 Q193 142 197 134 Q199 118 198 102Z" fill="url(#sir)"/>
+            <path class="sir-akis" d="M214 104 Q214 180 219 200 Q225 210 231 199 Q233 160 232 106Z" fill="url(#sir)"/>
+            <path class="sir-ust" d="M138 94 Q180 86 222 94" stroke="rgba(255,235,215,.35)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- pudra şekeri -->
+          <g fill="rgba(255,255,255,.75)">
+            <circle cx="140" cy="100" r="1.1"/><circle cx="158" cy="96" r=".9"/><circle cx="206" cy="97" r="1"/><circle cx="226" cy="101" r="1.2"/><circle cx="170" cy="108" r=".8"/><circle cx="236" cy="108" r=".9"/><circle cx="124" cy="110" r="1"/>
+          </g>
+          <!-- frambuaz + nane -->
+          <g transform="translate(-66 4) scale(-1 1) translate(-392 0)"><path d="M196 70 Q214 46 236 54 Q222 74 196 70Z" fill="url(#nane)"/><path d="M200 69 Q216 58 232 56" stroke="rgba(255,255,255,.35)" stroke-width="1" fill="none"/></g>
+          <g transform="translate(-42 6)">
+            <circle cx="186" cy="78" r="15" fill="url(#frambuaz)"/>
+            <g fill="rgba(255,255,255,.22)"><circle cx="179" cy="72" r="3"/><circle cx="187" cy="70" r="2.6"/><circle cx="194" cy="75" r="2.4"/><circle cx="181" cy="81" r="2.6"/><circle cx="190" cy="83" r="2.4"/></g>
+            <g fill="rgba(90,10,25,.35)"><circle cx="176" cy="78" r="2.8"/><circle cx="184" cy="88" r="2.6"/><circle cx="195" cy="85" r="2.4"/></g>
+            <circle cx="180" cy="71" r="1.6" fill="rgba(255,255,255,.85)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <svg class="logo-svg" viewBox="172 122 800 462" aria-hidden="true"><use href="#logo" width="1190.55" height="841.89"/></svg>
+    <span>© 2026 Chocolate Lounge &amp; Coffee · chocolateloungecoffee.com</span>
+  </div>
+</footer>
+
+<div class="isik-kutusu" id="menu-secim" role="dialog" aria-modal="true" aria-labelledby="menu-secim-baslik" hidden>
+  <button class="kapat" type="button" id="menu-secim-kapat" aria-label="Kapat">×</button>
+  <div class="secim-kart">
+    <svg class="logo-svg secim-logo" viewBox="484 124 186 262" aria-hidden="true"><use href="#logo" width="1190.55" height="841.89"/></svg>
+    <h2 id="menu-secim-baslik">Hangi şubenin menüsü?</h2>
+    <a class="sube-menu" href="https://menu.idrydigital.com/menu/chocolate-lounge-coffee-cayeli/1" target="_blank" rel="noopener"><b>Çayeli Şube</b><span>Kafeler Sokağı</span><i>↗</i></a>
+    <a class="sube-menu" href="https://menu.idrydigital.com/menu/chocolate-lounge-coffee-ardesen/1" target="_blank" rel="noopener"><b>Ardeşen Şube</b><span>Park Ardeşen AVM, Teras Kat</span><i>↗</i></a>
+  </div>
+</div>
+
+<div class="isik-kutusu" id="isik-kutusu" role="dialog" aria-modal="true" aria-label="Belge görüntüleyici" hidden>
+  <button class="kapat" type="button" id="kapat" aria-label="Kapat">×</button>
+  <figure><img id="isik-resim" alt=""><figcaption id="isik-baslik"></figcaption></figure>
+</div>
+
+<canvas id="akis" aria-hidden="true"></canvas>
+
+<script>
+(function () {
+  // Menü seçimi (iki şubenin ayrı menüsü var)
+  const secim = document.getElementById('menu-secim'), secimKapat = document.getElementById('menu-secim-kapat');
+  let secimOdak = null;
+  const secimKapa = () => { secim.hidden = true; if (secimOdak) secimOdak.focus(); };
+  document.querySelectorAll('[data-menu-link]').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault(); secimOdak = a; secim.hidden = false; secim.querySelector('.sube-menu').focus();
+  }));
+  secimKapat.addEventListener('click', secimKapa);
+  secim.addEventListener('click', e => { if (e.target === secim) secimKapa(); });
+  secim.querySelectorAll('.sube-menu').forEach(a => a.addEventListener('click', () => { secim.hidden = true; }));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !secim.hidden) secimKapa(); });
+
+  // Mobil menü
+  const hb = document.getElementById('hamburger'), panel = document.getElementById('mobil-panel');
+  hb.addEventListener('click', () => { panel.hidden = !panel.hidden; hb.setAttribute('aria-expanded', String(!panel.hidden)); });
+  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { panel.hidden = true; hb.setAttribute('aria-expanded', 'false'); }));
+
+  // Kopyala
+  document.querySelectorAll('.kopya').forEach(b => b.addEventListener('click', () => {
+    const el = document.getElementById(b.dataset.hedef), metin = el.dataset.k ? el.dataset.k + String.fromCharCode(64) + el.dataset.a : el.textContent.trim();
+    const tamam = () => { b.textContent = 'Kopyalandı'; setTimeout(() => b.textContent = 'Kopyala', 1600); };
+    const sec = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Seçildi'; };
+    try { navigator.clipboard.writeText(metin).then(tamam, sec); } catch (e) { sec(); }
+  }));
+
+  // Belge görüntüleyici
+  const kutu = document.getElementById('isik-kutusu'), resim = document.getElementById('isik-resim'), baslik = document.getElementById('isik-baslik'), kapatB = document.getElementById('kapat');
+  let sonOdak = null;
+  const kapat = () => { kutu.hidden = true; resim.removeAttribute('src'); if (sonOdak) sonOdak.focus(); };
+  document.querySelectorAll('.belge').forEach(b => b.addEventListener('click', () => {
+    sonOdak = b; resim.src = b.dataset.buyuk; resim.alt = b.dataset.baslik + ' belgesi'; baslik.textContent = b.dataset.baslik; kutu.hidden = false; kapatB.focus();
+  }));
+  kapatB.addEventListener('click', kapat);
+  kutu.addEventListener('click', e => { if (e.target === kutu) kapat(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !kutu.hidden) kapat(); });
+
+  // Çikolata akışı
+  const tuval = document.getElementById('akis'), ctx = tuval.getContext('2d');
+  const kapak = document.getElementById('kapak'), nokta = document.getElementById('sir-noktasi'), bulusma = document.getElementById('iletisim');
+  const az = matchMedia('(prefers-reduced-motion: reduce)');
+  let W, H, dpr, serit, bas, son, hx, kivrim, damlalar = [], bulustu = false, sonSicrama = 0;
+
+  function olc() {
+    dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
+    tuval.width = W * dpr; tuval.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    serit = W - (W > 760 ? Math.max(44, W * 0.045) : 14);
+    const y = scrollY;
+    bas = kapak.getBoundingClientRect().bottom + y + 24;
+    const r = nokta.getBoundingClientRect();
+    son = r.top + y; hx = r.left + r.width / 2;
+    kivrim = son - (W > 760 ? 300 : 190);
+  }
+  const yum = t => t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t);
+  const kAt = d => yum((d - kivrim) / (son - kivrim));
+  const xAt = (d, t) => serit + (hx - serit) * kAt(d) + (az.matches ? 0 : Math.sin(d * 0.016 + t * 2) * 1.4 * (1 - kAt(d)));
+  const wAt = (d, t) => { const g = W > 760 ? 18 : 9; return g * (1 - 0.3 * kAt(d)) * (1 + (az.matches ? 0 : 0.06 * Math.sin(d * 0.05 - t * 7))); };
+
+    function ciz(zaman) {
+    const t = zaman / 1000, sy = scrollY;
+    ctx.clearRect(0, 0, W, H);
+    const on = Math.min(son, sy + H * 0.74), ust = Math.max(bas, sy - 30);
+    if (on > bas && ust < sy + H) {
+      const adim = 4, pts = [];
+      for (let d = ust; d < on; d += adim) pts.push([xAt(d, t), d - sy, wAt(d, t) / 2]);
+      pts.push([xAt(on, t), on - sy, wAt(on, t) / 2]);
+      // gövde: aynı merkez çizgisi üzerinde katmanlı çizgiler → dikişsiz silindir parlaklığı
+      const parcaParca = (fn) => fn(pts);
+      ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      const katman = (oran, renk, ofs, alfa, golge) => {
+        parcaParca(sub => {
+          const w = sub[sub.length >> 1][2] * 2; ctx.globalAlpha = alfa; ctx.strokeStyle = renk; ctx.lineWidth = Math.max(1, w * oran);
+          if (golge) { ctx.shadowColor = 'rgba(30,14,6,.30)'; ctx.shadowBlur = 16; ctx.shadowOffsetX = 5; ctx.shadowOffsetY = 3; } else ctx.shadowColor = 'transparent';
+          ctx.beginPath(); for (let i = 0; i < sub.length; i++) { const [x, y, ww] = sub[i]; const j = Math.min(i + 1, sub.length - 1), k = Math.max(i - 1, 0); const dx = sub[j][0] - sub[k][0], dy = sub[j][1] - sub[k][1], L = Math.hypot(dx, dy) || 1; const px = x + (dy / L) * ww * ofs, py = y - (dx / L) * ww * ofs; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke();
+        });
+      };
+      katman(1.00, '#0d0502', 0, 1, true);
+      katman(0.78, '#2c1409', -0.04, 1, false);
+      katman(0.52, '#4a2614', -0.12, 1, false);
+      katman(0.26, '#7a4b2e', -0.26, 0.9, false);
+      katman(0.10, '#e0b58e', -0.32, 0.75, false);
+      katman(0.10, '#5c331d', 0.55, 0.5, false);
+      ctx.restore();
+      // akış boyunca aşağı kayan parıltılar
+      if (!az.matches) {
+        ctx.save(); ctx.globalCompositeOperation = 'lighter';
+        for (let i = 0; i < pts.length - 1; i += 2) {
+          const d = pts[i][1] + sy, s = Math.sin(d * 0.045 - t * 9);
+          if (s > 0.86) {
+            const [x, y, w] = pts[i];
+            ctx.fillStyle = `rgba(255,220,180,${(s - .86) * 1.6})`;
+            ctx.beginPath(); ctx.ellipse(x - w * 0.22, y, w * 0.16, 5, 0, 0, Math.PI * 2); ctx.fill();
+          }
+        }
+        ctx.restore();
+      }
+      // uç damla
+      if (on < son) {
+        const [x, y, w] = pts[pts.length - 1];
+        const rg = ctx.createRadialGradient(x - w * .35, y - w * .2, 1, x, y, w * 1.35);
+        rg.addColorStop(0, '#a87250'); rg.addColorStop(.35, '#4a2615'); rg.addColorStop(1, '#0d0502');
+        ctx.fillStyle = rg; ctx.beginPath(); ctx.ellipse(x, y + w * .3, w * 1.25, w * 1.5, 0, 0, Math.PI * 2); ctx.fill();
+        if (!az.matches && Math.random() < 0.05) damlalar.push({ x: x + (Math.random() - .5) * w, y: on + w, vx: 0, vy: 1.4, r: 1.6 + Math.random() * 2.2, o: 1 });
+      }
+    }
+    const buldu = on >= son - 1;
+    if (buldu !== bulustu) { bulustu = buldu; bulusma.classList.toggle('bulusti', buldu); }
+    if (buldu && !az.matches && zaman - sonSicrama > 130) {
+      sonSicrama = zaman;
+      for (let i = 0; i < 2; i++) { const a = -Math.PI / 2 + (Math.random() - .5) * 2.4; damlalar.push({ x: hx, y: son, vx: Math.cos(a) * 1.8, vy: Math.sin(a) * 2.6, r: 1.2 + Math.random() * 2, o: 1 }); }
+    }
+    damlalar = damlalar.filter(p => p.o > 0);
+    for (const p of damlalar) {
+      p.vy += 0.13; p.x += p.vx; p.y += p.vy; p.o -= 0.022;
+      const rg = ctx.createRadialGradient(p.x - p.r * .4, p.y - sy - p.r * .4, .2, p.x, p.y - sy, p.r);
+      rg.addColorStop(0, '#9a6646'); rg.addColorStop(1, '#170903');
+      ctx.globalAlpha = Math.max(0, p.o); ctx.fillStyle = rg;
+      ctx.beginPath(); ctx.arc(p.x, p.y - sy, p.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(ciz);
+  }
+  addEventListener('resize', olc); addEventListener('load', olc);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(olc);
+  olc(); requestAnimationFrame(ciz);
+})();
+</script>
