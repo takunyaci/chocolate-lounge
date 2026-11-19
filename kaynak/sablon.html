@@ -209,15 +209,7 @@ a { color: inherit; text-decoration: none; }
 .d-dugme.dolu { background: var(--metin); color: #fbf6ef; border-color: var(--metin); }
 .d-dugme:hover { transform: translateY(-2px); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
 
-/* Çikolatayla dolan dev logo yazısı */
-.dev-yazi { padding: clamp(80px, 11vw, 140px) max(16px, env(safe-area-inset-right, 0px)) clamp(36px, 5vw, 56px) max(16px, env(safe-area-inset-left, 0px)); text-align: center; overflow: hidden; }
-.dev-svg { display: block; width: 100%; max-width: 1240px; height: auto; margin-inline: auto; overflow: hidden; }
-.bos-harf { color: #f1e9e0; stroke: #dccdbd; stroke-width: 1.1; }
-.dev-alt { margin-top: clamp(10px, 1.6vw, 20px); font-size: clamp(16px, 2.6vw, 30px); letter-spacing: .32em; text-transform: uppercase; font-weight: 600; color: var(--altin); opacity: 0; transform: translateY(10px); transition: opacity .8s, transform .8s; }
-.dev-yazi.dolu .dev-alt { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .dev-alt { transition: none; } }
-
-footer { background: var(--gece); color: rgba(245,236,226,.55); position: relative; z-index: 6; }
+footer { background: var(--gece); color: rgba(245,236,226,.55); position: relative; z-index: 6; margin-top: clamp(80px, 10vw, 120px); }
 footer .wrap { padding-block: 40px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; font-size: 12.5px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
 
@@ -461,24 +453,6 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
     </div>
   </section>
 
-  <section class="dev-yazi" id="dev-yazi" aria-label="Chocolate Lounge &amp; Coffee">
-    <svg class="dev-svg" id="dev-svg" viewBox="176 403 792 98" aria-hidden="true">
-      <defs>
-        <mask id="harf-maske" maskUnits="userSpaceOnUse" x="0" y="0" width="1191" height="842">
-          <use href="#logo" width="1190.55" height="841.89" style="color:#fff"/>
-        </mask>
-        <linearGradient id="sivi-g" x1="0" y1="403" x2="0" y2="501" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stop-color="#7a4a2e"/><stop offset=".35" stop-color="#4a2614"/><stop offset="1" stop-color="#1c0b05"/>
-        </linearGradient>
-      </defs>
-      <use class="bos-harf" href="#logo" width="1190.55" height="841.89"/>
-      <g mask="url(#harf-maske)">
-        <path id="sivi" fill="url(#sivi-g)" d="M170 520H975V520H170Z"/>
-        <path id="sivi-parlak" fill="none" stroke="rgba(255,224,196,.55)" stroke-width="1.4" d=""/>
-      </g>
-    </svg>
-    <div class="dev-alt">Lounge &amp; Coffee</div>
-  </section>
 </main>
 
 <footer>
@@ -735,33 +709,5 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
   }
   durumGuncelle(); setInterval(durumGuncelle, 30000);
 
-  // Dev logo yazısı: sayfanın sonuna yaklaştıkça harflerin içi çikolatayla dolar
-  (function devYazi() {
-    const svg = document.getElementById('dev-svg'), bolum = document.getElementById('dev-yazi');
-    const sivi = document.getElementById('sivi'), parlak = document.getElementById('sivi-parlak');
-    const az = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let p = 0, dolduMu = false;
-    function kare(zaman) {
-      const r = svg.getBoundingClientRect(), H = innerHeight, t = zaman / 1000;
-      if (r.bottom > -50 && r.top < H + 50) {
-        const sonda = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
-        let hedef = Math.min(1, Math.max(0, (H - r.top) / (H * 0.62)));
-        if (sonda || az) hedef = 1;
-        p += (hedef - p) * (az ? 1 : 0.06);
-        const seviye = 501 - p * 100, gen = az ? 0 : 2.2 + (1 - p) * 2.4;
-        let d = `M170 ${seviye.toFixed(2)}`, cizgi = d;
-        for (let x = 170; x <= 975; x += 15) {
-          const y = seviye + Math.sin(x * 0.022 + t * 2.4) * gen + Math.sin(x * 0.051 - t * 1.7) * gen * 0.45;
-          d += ` L${x} ${y.toFixed(2)}`; cizgi += ` L${x} ${y.toFixed(2)}`;
-        }
-        sivi.setAttribute('d', d + ' L975 520 L170 520 Z');
-        parlak.setAttribute('d', cizgi);
-        const doldu = p > 0.97;
-        if (doldu !== dolduMu) { dolduMu = doldu; bolum.classList.toggle('dolu', doldu); }
-      }
-      if (!az || !dolduMu) requestAnimationFrame(kare);
-    }
-    requestAnimationFrame(kare);
-  })();
 })();
 </script>
