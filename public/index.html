@@ -81,7 +81,7 @@ a { color: inherit; text-decoration: none; }
 .hamburger span { display: block; width: 18px; height: 1.5px; background: currentColor; margin: 5px auto; transition: transform .25s; }
 .mobil-panel { background: rgba(13,8,6,.96); padding: 8px max(24px, env(safe-area-inset-right, 0px)) 24px max(24px, env(safe-area-inset-left, 0px)); }
 .mobil-panel a { display: block; color: #f5ece2; font-size: 22px; font-weight: 700; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
-@media (max-width: 860px) {
+@media (max-width: 1100px) {
   .nav-linkler li:not(.her-zaman) { display: none; }
   .hamburger { display: block; }
   .nav-linkler { gap: 8px; }
@@ -97,12 +97,25 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) { .nav-linkler a:not(.menu-dugme)::after { transition: none; } }
 
 /* Kapak */
-.kapak { position: relative; z-index: 2; background: radial-gradient(120% 80% at 50% 0%, #2b1912 0%, var(--gece) 62%); color: #f5ece2; text-align: center; }
-.kapak .wrap { padding-block: clamp(56px, 9vw, 110px) clamp(84px, 11vw, 130px); display: grid; justify-items: center; gap: 22px; }
-.kapak .buyuk-logo { width: min(520px, 82vw); aspect-ratio: 805 / 470; height: auto; color: var(--logo-acik); filter: drop-shadow(0 10px 40px rgba(192,138,82,.18)); }
-.kapak h1 { font-size: clamp(40px, 7vw, 80px); margin-top: 10px; background: linear-gradient(180deg, #fff 30%, #d9b996 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.kapak .alt { font-size: clamp(19px, 2.4vw, 25px); color: rgba(245,236,226,.72); max-width: 30ch; letter-spacing: -.015em; }
-.cta { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; margin-top: 6px; font-size: 19px; }
+.kapak { position: relative; z-index: 2; background: #050303; color: #f5ece2; }
+.kapak-ic { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); align-items: center; max-width: 1360px; margin-inline: auto; min-height: min(84vh, 800px); }
+.kapak-metin { display: grid; justify-items: start; gap: 20px; text-align: left; padding-block: 64px 96px; padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: 16px; position: relative; z-index: 1; }
+.kapak .buyuk-logo { width: min(340px, 70vw); aspect-ratio: 805 / 470; height: auto; color: var(--logo-acik); margin-bottom: 8px; }
+.kapak-foto { margin: 0; position: relative; align-self: stretch; overflow: hidden; }
+.kapak-foto img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 55% 62%; animation: yakinlas 26s ease-in-out infinite alternate; }
+.kapak-foto::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, #050303 0%, rgba(5,3,3,.7) 12%, rgba(5,3,3,0) 36%), linear-gradient(0deg, #050303 0%, rgba(5,3,3,.75) 16%, rgba(5,3,3,0) 40%), linear-gradient(180deg, rgba(5,3,3,.6) 0%, rgba(5,3,3,0) 18%); }
+@keyframes yakinlas { from { transform: scale(1); } to { transform: scale(1.09) translate(-1.5%, -1%); } }
+@media (prefers-reduced-motion: reduce) { .kapak-foto img { animation: none; } }
+@media (max-width: 860px) {
+  .kapak-ic { grid-template-columns: 1fr; min-height: 0; }
+  .kapak-foto { order: -1; height: min(58vh, 480px); }
+  .kapak-foto::after { background: linear-gradient(0deg, #050303 0%, rgba(5,3,3,.8) 20%, rgba(5,3,3,0) 50%), linear-gradient(180deg, rgba(5,3,3,.5) 0%, rgba(5,3,3,0) 16%); }
+  .kapak-metin { justify-items: center; text-align: center; padding: 0 max(20px, env(safe-area-inset-right, 0px)) 84px max(20px, env(safe-area-inset-left, 0px)); margin-top: -40px; }
+  .kapak .buyuk-logo { width: min(260px, 66vw); }
+}
+.kapak h1 { font-size: clamp(40px, 5.6vw, 76px); margin-top: 0; background: linear-gradient(180deg, #fff 30%, #d9b996 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.kapak .alt { font-size: clamp(19px, 2.2vw, 23px); color: rgba(245,236,226,.72); max-width: 30ch; letter-spacing: -.015em; }
+.cta { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 6px; font-size: 19px; }
 .cta a { color: var(--altin-acik); }
 .cta a:hover { text-decoration: underline; }
 .cta a.dolu { background: var(--altin); color: #160c07; padding: 11px 22px; border-radius: 999px; font-weight: 600; font-size: 17px; }
@@ -129,6 +142,19 @@ a { color: inherit; text-decoration: none; }
 .k li { display: flex; gap: 12px; align-items: baseline; font-size: 17px; color: rgba(245,236,226,.86); }
 .k li::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--altin); transform: translateY(-2px); }
 .k .filigran { position: absolute; right: -30px; bottom: -40px; width: 220px; height: 300px; color: rgba(255,255,255,.05); pointer-events: none; }
+
+/* Vitrin */
+.vitrin { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.vitrin-kart { margin: 0; display: grid; gap: 14px; min-width: 0; }
+.vitrin-foto { border-radius: 28px; overflow: hidden; aspect-ratio: 1 / 1; max-width: 100%; background: var(--karo); box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 18px 40px rgba(60,34,22,.12); }
+.vitrin-foto img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+.vitrin-kart:hover .vitrin-foto img { transform: scale(1.05); }
+.vitrin-kart figcaption { display: grid; gap: 4px; padding-inline: 6px; }
+.vitrin-kart b { font-size: 21px; letter-spacing: -.02em; }
+.vitrin-kart span { font-size: 15px; color: var(--metin-2); }
+.vitrin-alt { text-align: center; margin-top: 28px; font-size: 17px; }
+@media (max-width: 760px) { .vitrin { grid-template-columns: 1fr; gap: 26px; } .vitrin-foto { border-radius: 22px; } }
+@media (min-width: 761px) and (max-width: 980px) { .vitrin { grid-template-columns: repeat(2, minmax(0, 1fr)); } .vitrin-kart:last-child { grid-column: span 2; } .vitrin-kart:last-child .vitrin-foto { aspect-ratio: 2 / 1; } }
 
 /* Galeri */
 .serit-galeri { overflow: hidden; padding-block: 16px 56px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
@@ -308,6 +334,7 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
       <svg class="logo-svg yazi" viewBox="174 401 796 186" role="img" aria-label="Chocolate Lounge &amp; Coffee"><use href="#logo" width="1190.55" height="841.89"/></svg>
     </a>
     <ul class="nav-linkler">
+      <li><a href="#vitrin">Vitrin</a></li>
       <li><a href="#hakkimizda">Hakkımızda</a></li>
       <li><a href="#vizyon">Vizyon &amp; Misyon</a></li>
       <li><a href="#subeler">Şubeler</a></li>
@@ -319,6 +346,7 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
     </ul>
   </div>
   <div class="mobil-panel" id="mobil-panel" hidden>
+    <a href="#vitrin">Vitrin</a>
     <a href="#hakkimizda">Hakkımızda</a>
     <a href="#vizyon">Vizyon &amp; Misyon</a>
     <a href="#subeler">Şubeler</a>
@@ -329,21 +357,42 @@ footer .logo-svg { width: 150px; height: 88px; color: rgba(234,215,191,.8); }
 </nav>
 
 <header class="kapak" id="kapak">
-  <div class="wrap">
-    <svg class="logo-svg buyuk-logo" viewBox="172 122 800 462" role="img" aria-label="Chocolate Lounge &amp; Coffee logosu"><use href="#logo" width="1190.55" height="841.89"/></svg>
-    <h1>Tatlının en saf hali.</h1>
-    <p class="alt">Sürekli taze sunum. Her gün, her tabakta, ilk günkü lezzet.</p>
-    <div class="cta">
-      <a class="dolu" href="#" data-menu-link>Menüyü incele</a>
+  <div class="kapak-ic">
+    <div class="kapak-metin">
+      <svg class="logo-svg buyuk-logo" viewBox="172 122 800 462" role="img" aria-label="Chocolate Lounge &amp; Coffee logosu"><use href="#logo" width="1190.55" height="841.89"/></svg>
+      <h1>Tatlının en saf hali.</h1>
+      <p class="alt">Sürekli taze sunum. Her gün, her tabakta, ilk günkü lezzet.</p>
+      <div class="cta">
+        <a class="dolu" href="#" data-menu-link>Menüyü incele</a>
+      </div>
     </div>
+    <figure class="kapak-foto">
+      <img src="urunler/kapak-1400.jpg" srcset="urunler/kapak-900.jpg 900w, urunler/kapak-1400.jpg 1400w" sizes="(max-width: 760px) 100vw, 56vw" width="1400" height="1400" alt="Üzerine sütlü ve beyaz çikolata akan, çilekli ve muzlu tatlı" fetchpriority="high">
+    </figure>
   </div>
   <svg class="damla-kenar" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
-    <defs><linearGradient id="kenar-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d0806"/><stop offset="1" stop-color="#22130c"/></linearGradient></defs>
+    <defs><linearGradient id="kenar-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#050303"/><stop offset="1" stop-color="#1a0e09"/></linearGradient></defs>
     <path fill="url(#kenar-g)" d="M0 0H1200V8C1176 8 1172 26 1158 26S1142 10 1110 10 1072 34 1054 34 1034 12 996 12 948 18 920 18 890 6 842 6 812 36 794 36 774 10 726 10 678 22 650 22 620 8 572 8 538 30 520 30 500 10 458 10 410 17 382 17 356 5 312 5 284 35 266 35 246 12 198 12 160 24 136 24 112 8 82 8 54 15 30 15 14 6 0 6Z"/>
   </svg>
 </header>
 
 <main>
+  <section class="bolum" id="vitrin">
+    <div class="wrap">
+      <div class="bolum-bas">
+        <div class="goz">Vitrinden</div>
+        <h2>Bugün ne tatlı?</h2>
+        <p>Hepsi gün içinde taze hazırlanır, tabağa sıcak çikolatasıyla gelir.</p>
+      </div>
+      <div class="vitrin">
+        <figure class="vitrin-kart belir"><div class="vitrin-foto"><img src="urunler/cilek-sutlu-800.jpg" width="800" height="800" loading="lazy" alt="Vanilyalı krema ve taze çilekli, sütlü çikolata soslu tatlı"></div><figcaption><b>Çilek &amp; sütlü çikolata</b><span>Vanilyalı krema, taze çilek, beyaz çikolata çizgileri</span></figcaption></figure>
+        <figure class="vitrin-kart belir"><div class="vitrin-foto"><img src="urunler/fistik-cilek-800.jpg" width="800" height="800" loading="lazy" alt="Kremalı, çilekli, Antep fıstıklı ve çikolata soslu tatlı"></div><figcaption><b>Fıstık &amp; çilek</b><span>Bol krema, sütlü çikolata, Antep fıstığı</span></figcaption></figure>
+        <figure class="vitrin-kart belir"><div class="vitrin-foto"><img src="urunler/tatli-limonata-800.jpg" width="800" height="800" loading="lazy" alt="Masada fıstıklı çikolatalı tatlı ve bir bardak limonata"></div><figcaption><b>Bir tatlı, bir limonata</b><span>Fıstıklı tatlının yanına buz gibi limonata</span></figcaption></figure>
+      </div>
+      <div class="vitrin-alt"><a class="ok-link" href="#" data-menu-link>Tüm menüyü gör ↗</a></div>
+    </div>
+  </section>
+
   <section class="bolum" id="hakkimizda">
     <div class="wrap">
       <div class="bolum-bas">
